@@ -5,6 +5,7 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/app
+      - /app/node_modules
 
   frontend:
     build: ./frontend
@@ -15,3 +16,19 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
+  
+  postgres:
+    image: postgres:17
+    container_name: opscopilot-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+volumes:
+  postgres_data:
