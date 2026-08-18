@@ -13,12 +13,102 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  username  String   @unique
-  email     String   @unique
-  age       Int?
-  createdAt DateTime @default(now())
+  id           String        @id @default(cuid())
+  fullName     String
+  email        String        @unique
+  password     String
+  // This ? means optional, val can be null too
+  profilePic   String?
+  datasets     Dataset[]
+  chatSessions ChatSession[]
+  aiRequests   AIRequest[]
+}
 
-  @@map("users")
+model Dataset {
+  id           String        @id @default(cuid())
+  name         String
+  fileName     String
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cases        Case[]
+  chatSessions ChatSession[]
+  aiRequests   AIRequest[]
+  documents    Document[]
+}
+
+model Case {
+  id           String   @id @default(cuid())
+  caseId       String
+  priority     String
+  channel      String
+  customerType String
+  createdAt    DateTime @default(now())
+  datasetId    String
+  dataset      Dataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  events       Event[]
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  eventId   String
+  activity  String
+  timestamp DateTime
+  resource  String
+  status    String
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model ChatSession {
+  id         String        @id @default(cuid())
+  datasetId  String
+  dataset    Dataset       @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  messages   ChatMessage[]
+  aiRequests AIRequest[]
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String
+  content   String
+  createdAt DateTime    @default(now())
+}
+
+model AIRequest {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  datasetId     String
+  dataset       Dataset      @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  sessionId     String?
+  session       ChatSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  question      String
+  response      String?
+  latencyMs     Int?
+  inputTokens   Int?
+  outputTokens  Int?
+  estimatedCost Float?
+  success       Boolean
+  error         String?
+  createdAt     DateTime     @default(now())
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  datasetId  String
+  dataset    Dataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  name       String
+  fileName   String
+  fileType   String
+  uploadedAt DateTime @default(now())
 }
