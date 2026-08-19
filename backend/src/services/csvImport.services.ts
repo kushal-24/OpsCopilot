@@ -3,6 +3,7 @@ import "dotenv/config";
 import csv from "csv-parser";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { SEEDED_DATASET_ID } from "../config/constants";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -16,7 +17,7 @@ lets me program interact with files on my computer. */
 const filePath = "data/event_log_flat.csv";
 
 async function importDataset() {
-  const datasetId= "cmsybid3x0001lpliymvmo55i";
+  const datasetId = SEEDED_DATASET_ID;
 
   const rows: any[] = [];
 
