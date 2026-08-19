@@ -102,6 +102,9 @@ model AIRequest {
   inputTokens   Int?
   outputTokens  Int?
   estimatedCost Float?
+  // Same shape as ChatMessage.toolCalls: which tool(s) this request invoked,
+  // their args, and results/errors.
+  toolCalls     Json?
   success       Boolean
   error         String?
   createdAt     DateTime     @default(now())

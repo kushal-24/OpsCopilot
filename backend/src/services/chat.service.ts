@@ -1,7 +1,20 @@
 import { prisma } from "../lib/prisma";
 import apiError from "../utils/apiError.js";
 import { runAgentTurn, ChatHistoryEntry } from "../lib/gemini";
-import { SEEDED_DATASET_ID, MAX_CHAT_SESSIONS_PER_USER } from "../config/constants";
+import {
+  SEEDED_DATASET_ID,
+  MAX_CHAT_SESSIONS_PER_USER,
+  GEMINI_INPUT_COST_PER_MILLION_TOKENS,
+  GEMINI_OUTPUT_COST_PER_MILLION_TOKENS,
+} from "../config/constants";
+
+function estimateCost(inputTokens: number, outputTokens: number): number {
+  const cost =
+    (inputTokens / 1_000_000) * GEMINI_INPUT_COST_PER_MILLION_TOKENS +
+    (outputTokens / 1_000_000) * GEMINI_OUTPUT_COST_PER_MILLION_TOKENS;
+
+  return Math.round(cost * 1e6) / 1e6;
+}
 
 async function enforceSessionCap(userId: string) {
   const sessions = await prisma.chatSession.findMany({
@@ -87,20 +100,58 @@ export async function sendMessage(
     data: { sessionId, role: "user", content },
   });
 
-  const { text, toolCalls } = await runAgentTurn(history, content, {
-    datasetId: session.datasetId,
-  });
+  const startedAt = Date.now();
 
-  const assistantMessage = await prisma.chatMessage.create({
-    data: {
-      sessionId,
-      role: "model",
-      content: text,
-      toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
-    },
-  });
+  try {
+    const { text, toolCalls, inputTokens, outputTokens } = await runAgentTurn(
+      history,
+      content,
+      { datasetId: session.datasetId },
+    );
 
-  return { userMessage, assistantMessage };
+    const assistantMessage = await prisma.chatMessage.create({
+      data: {
+        sessionId,
+        role: "model",
+        content: text,
+        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+      },
+    });
+
+    await prisma.aIRequest.create({
+      data: {
+        userId,
+        datasetId: session.datasetId,
+        sessionId,
+        question: content,
+        response: text,
+        latencyMs: Date.now() - startedAt,
+        inputTokens,
+        outputTokens,
+        estimatedCost: estimateCost(inputTokens, outputTokens),
+        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+        success: true,
+      },
+    });
+
+    return { userMessage, assistantMessage };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Agent request failed";
+
+    await prisma.aIRequest.create({
+      data: {
+        userId,
+        datasetId: session.datasetId,
+        sessionId,
+        question: content,
+        latencyMs: Date.now() - startedAt,
+        success: false,
+        error: errorMessage,
+      },
+    });
+
+    throw err;
+  }
 }
 
 export async function deleteSession(sessionId: string, userId: string) {

@@ -40,6 +40,8 @@ export type ToolCallRecord = {
 export type AgentReply = {
   text: string;
   toolCalls: ToolCallRecord[];
+  inputTokens: number;
+  outputTokens: number;
 };
 
 const toolDeclarations = analyticsTools.map((tool) => ({
@@ -76,14 +78,23 @@ export async function runAgentTurn(
   });
 
   const toolCalls: ToolCallRecord[] = [];
+  let inputTokens = 0;
+  let outputTokens = 0;
 
   let response = await chat.sendMessage({ message: newMessage });
+
+  const trackUsage = (res: typeof response) => {
+    inputTokens += res.usageMetadata?.promptTokenCount ?? 0;
+    outputTokens += res.usageMetadata?.candidatesTokenCount ?? 0;
+  };
+
+  trackUsage(response);
 
   for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
     const functionCalls = response.functionCalls;
 
     if (!functionCalls || functionCalls.length === 0) {
-      return { text: response.text ?? "", toolCalls };
+      return { text: response.text ?? "", toolCalls, inputTokens, outputTokens };
     }
     
     /*
@@ -130,6 +141,7 @@ export async function runAgentTurn(
     }
 
     response = await chat.sendMessage({ message: responseParts });
+    trackUsage(response);
   }
 
   // Hit the round cap without the model settling on a text answer — force
@@ -143,6 +155,7 @@ export async function runAgentTurn(
       },
     },
   });
+  trackUsage(finalResponse);
 
-  return { text: finalResponse.text ?? "", toolCalls };
+  return { text: finalResponse.text ?? "", toolCalls, inputTokens, outputTokens };
 }

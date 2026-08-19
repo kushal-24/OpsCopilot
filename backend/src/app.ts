@@ -5,6 +5,7 @@ import passport from "passport"
 import analyticsRouter from "./routes/analytics.routes"
 import userRouter from "./routes/user.routes"
 import chatRouter from "./routes/chat.routes"
+import monitoringRouter from "./routes/monitoring.routes"
 import apiError from "./utils/apiError.js"
 
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/analytics", analyticsRouter);
+app.use("/api/v1/monitoring", monitoringRouter);
 
 // Central error handler: catches whatever asyncHandler forwards via next(err)
 // so a thrown apiError (or anything else) becomes a JSON response instead of
