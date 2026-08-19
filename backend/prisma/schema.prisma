@@ -19,6 +19,7 @@ model User {
   password     String
   // This ? means optional, val can be null too
   profilePic   String?
+  refreshToken String?
   datasets     Dataset[]
   chatSessions ChatSession[]
   aiRequests   AIRequest[]
