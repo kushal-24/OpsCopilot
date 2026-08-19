@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma";
 import apiError from "../utils/apiError.js";
-import { generateChatReply, ChatHistoryEntry } from "../lib/gemini";
+import { runAgentTurn, ChatHistoryEntry } from "../lib/gemini";
 import { SEEDED_DATASET_ID, MAX_CHAT_SESSIONS_PER_USER } from "../config/constants";
 
 async function enforceSessionCap(userId: string) {
@@ -71,13 +71,13 @@ export async function sendMessage(
   userId: string,
   content: string
 ) {
-  await assertSessionOwnership(sessionId, userId);
+  const session = await assertSessionOwnership(sessionId, userId);
 
   const priorMessages = await prisma.chatMessage.findMany({
     where: { sessionId },
     orderBy: { createdAt: "asc" },
   });
-  
+
   const history: ChatHistoryEntry[] = priorMessages.map((message) => ({
     role: message.role === "user" ? "user" : "model",
     content: message.content,
@@ -87,10 +87,17 @@ export async function sendMessage(
     data: { sessionId, role: "user", content },
   });
 
-  const replyText = await generateChatReply(history, content);
+  const { text, toolCalls } = await runAgentTurn(history, content, {
+    datasetId: session.datasetId,
+  });
 
   const assistantMessage = await prisma.chatMessage.create({
-    data: { sessionId, role: "model", content: replyText },
+    data: {
+      sessionId,
+      role: "model",
+      content: text,
+      toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+    },
   });
 
   return { userMessage, assistantMessage };
