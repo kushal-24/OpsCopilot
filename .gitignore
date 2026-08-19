@@ -44,3 +44,6 @@ backend/src/generated/prisma/
 # OS
 .DS_Store
 
+# documents
+Phases.md
+Rules.md
