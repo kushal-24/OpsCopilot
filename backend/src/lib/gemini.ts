@@ -159,3 +159,54 @@ export async function runAgentTurn(
 
   return { text: finalResponse.text ?? "", toolCalls, inputTokens, outputTokens };
 }
+
+const JUDGE_INSTRUCTION = `You are grading an AI assistant's answer to a question about operational
+event-log data. Given the question, an expected answer (or expected
+behavior), and the assistant's actual answer, decide if the actual answer
+is acceptable.
+
+- If the expected answer contains specific numbers/facts, the actual answer
+  must be factually consistent with them (close paraphrasing/rounding is
+  fine; wrong numbers or contradicted facts are a fail).
+- If the expected answer describes a behavior (e.g. "should ask a
+  clarifying question", "should refuse as off-topic"), judge whether the
+  actual answer exhibits that behavior.
+- Be strict about factual correctness, lenient about phrasing.
+
+Respond with strict JSON: { "pass": boolean, "reasoning": string }
+(reasoning is one short sentence).`;
+
+export type JudgeVerdict = {
+  pass: boolean;
+  reasoning: string;
+};
+
+/**
+ * LLM-as-judge for the eval runner (Phase 6). Reuses the same client/model
+ * as the chat agent above, but as a single non-chat call — no history, no
+ * tools, just a grading verdict.
+ */
+export async function judgeAnswer(
+  question: string,
+  expectedAnswer: string,
+  actualAnswer: string,
+): Promise<JudgeVerdict> {
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: `Question: ${question}\nExpected: ${expectedAnswer}\nActual: ${actualAnswer}`,
+    config: { systemInstruction: JUDGE_INSTRUCTION },
+  });
+
+  try {
+    const text = (response.text ?? "").trim();
+    const jsonText = text.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
+    const parsed = JSON.parse(jsonText);
+
+    return {
+      pass: parsed.pass === true,
+      reasoning: typeof parsed.reasoning === "string" ? parsed.reasoning : "",
+    };
+  } catch {
+    return { pass: false, reasoning: "judge response unparsable" };
+  }
+}

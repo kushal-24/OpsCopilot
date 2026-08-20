@@ -38,6 +38,7 @@ model Dataset {
   chatSessions ChatSession[]
   aiRequests   AIRequest[]
   documents    Document[]
+  evalRuns     EvalRun[]
 }
 
 model Case {
@@ -118,4 +119,28 @@ model Document {
   fileName   String
   fileType   String
   uploadedAt DateTime @default(now())
+}
+
+model EvalRun {
+  id        String       @id @default(cuid())
+  datasetId String
+  dataset   Dataset      @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  createdAt DateTime     @default(now())
+  results   EvalResult[]
+}
+
+model EvalResult {
+  id             String   @id @default(cuid())
+  evalRunId      String
+  evalRun        EvalRun  @relation(fields: [evalRunId], references: [id], onDelete: Cascade)
+  // Stable key from the static question set (src/config/evalQuestions.ts).
+  questionId     String
+  // Denormalized from the question set: a run is a historical snapshot, so
+  // the displayed question/expected text doesn't shift if the set is edited.
+  question       String
+  expectedAnswer String
+  actualAnswer   String
+  pass           Boolean
+  judgeReasoning String?
+  createdAt      DateTime @default(now())
 }
