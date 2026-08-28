@@ -1,10 +1,11 @@
-import { User } from "../generated/prisma/models";
+import { User as PrismaUser } from "../generated/prisma/client";
 
 declare global {
   namespace Express {
-    interface Request {
-      user?: Omit<User, "password" | "refreshToken">;
-    }
+    // Augmenting Express.User (not redeclaring Request.user directly) so it
+    // merges with passport's own `interface User {}` / `Request.user?: User`
+    // declarations instead of silently losing to them.
+    interface User extends Omit<PrismaUser, "password" | "refreshToken"> {}
   }
 }
 

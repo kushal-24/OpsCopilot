@@ -1,12 +1,21 @@
 import { prisma } from "../lib/prisma";
+import { Prisma } from "../generated/prisma/client";
 import apiError from "../utils/apiError.js";
-import { runAgentTurn, ChatHistoryEntry } from "../lib/gemini";
+import { runAgentTurn, ChatHistoryEntry, ToolCallRecord } from "../lib/gemini";
+import { getCurrentDataset } from "./dataset.service";
 import {
-  SEEDED_DATASET_ID,
   MAX_CHAT_SESSIONS_PER_USER,
   GEMINI_INPUT_COST_PER_MILLION_TOKENS,
   GEMINI_OUTPUT_COST_PER_MILLION_TOKENS,
 } from "../config/constants";
+
+// ToolCallRecord.result/args are `unknown`/loosely-typed at the call site,
+// but always JSON-serializable in practice (tool results are plain data
+// from analytics.service.ts) — asserted here so Prisma's Json input type
+// (which requires JSON-serializable values, not `unknown`) is satisfied.
+function toJsonInput(toolCalls: ToolCallRecord[]): Prisma.InputJsonValue | undefined {
+  return toolCalls.length > 0 ? (toolCalls as unknown as Prisma.InputJsonValue) : undefined;
+}
 
 function estimateCost(inputTokens: number, outputTokens: number): number {
   const cost =
@@ -34,13 +43,16 @@ async function enforceSessionCap(userId: string) {
 }
 
 export async function createSession(userId: string, title?: string) {
+  const dataset = await getCurrentDataset(userId);
+
+  if (!dataset) {
+    throw new apiError(400, "Upload a dataset or use the demo dataset before starting a chat");
+  }
+
   const session = await prisma.chatSession.create({
     data: {
       userId,
-      // TODO(RAG): pin to a real user-selected dataset once RAG/dataset
-      // upload wiring lands — every session is pinned to the demo dataset
-      // until then.
-      datasetId: SEEDED_DATASET_ID,
+      datasetId: dataset.id,
       title: title?.trim() || "New chat",
     },
   });
@@ -114,7 +126,7 @@ export async function sendMessage(
         sessionId,
         role: "model",
         content: text,
-        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+        toolCalls: toJsonInput(toolCalls),
       },
     });
 
@@ -129,7 +141,7 @@ export async function sendMessage(
         inputTokens,
         outputTokens,
         estimatedCost: estimateCost(inputTokens, outputTokens),
-        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+        toolCalls: toJsonInput(toolCalls),
         success: true,
       },
     });
