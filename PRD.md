@@ -15,3 +15,6 @@ Here's the experience you're building. A manager uploads their operational data 
 And the assistant actually answers — not by making things up, but by *going and querying the real data*, running the numbers, and replying in plain language a non-technical person trusts.
 
 That's the whole soul of it: **turn messy operational logs into clear, trustworthy, conversational insight for someone who can't read SQL.** That is *precisely* the sentence IBY uses to describe their own company. When a reviewer opens your README, they should feel a little jolt of "wait, this kid gets what we do."
+
+
+FLOWCHART FOR THE ENTIRE BACKEND- https://claude.ai/code/artifact/a0416b32-91a5-493e-871c-25b1a954c184?via=auto_preview
