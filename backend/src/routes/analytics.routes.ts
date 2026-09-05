@@ -7,6 +7,7 @@ import {
   getSlowestCases,
   getCasesByStatus,
   getCasesByPriority,
+  getDashboardInsight,
 } from "../controllers/analytics.controller";
 
 const router = Router();
@@ -23,5 +24,8 @@ router.get("/throughput", getThroughput);
 router.get("/slowest-cases", getSlowestCases);
 router.get("/status", getCasesByStatus);
 router.get("/priority", getCasesByPriority);
+
+// LLM-generated plain-English summary of the dashboard's own numbers.
+router.get("/insight", getDashboardInsight);
 
 export default router;

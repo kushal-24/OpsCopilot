@@ -72,3 +72,9 @@ export const getCasesByPriority = asyncHandler(
       .json(new apiResponse(data, 200, "Cases by priority fetched"));
   }
 );
+
+export const getDashboardInsight = asyncHandler(async (req: Request, res: Response) => {
+  const text = await analyticsService.getDashboardInsight(getDatasetId(req));
+
+  res.status(200).json(new apiResponse({ text }, 200, "Dashboard insight fetched"));
+});

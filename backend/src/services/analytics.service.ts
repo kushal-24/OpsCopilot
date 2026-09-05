@@ -1,4 +1,6 @@
 import { prisma } from "../lib/prisma";
+import { generateDashboardInsight } from "../lib/gemini";
+import { DASHBOARD_INSIGHT_CACHE_TTL_MS } from "../config/constants";
 
 const MS_PER_HOUR = 1000 * 60 * 60;
 
@@ -265,6 +267,32 @@ export async function getCasesByPriority(datasetId?: string) {
   const cases = await loadCaseTimelines(datasetId);
 
   return countBy(cases, (c) => c.priority, "priority");
+}
+
+const insightCache = new Map<string, { text: string; expiresAt: number }>();
+
+/**
+ * The Phase 3 "plain-English auto-summary" — a short LLM take on the
+ * dashboard's own KPI/activity numbers. Cached per dataset since it's an
+ * LLM call on a page that gets viewed repeatedly.
+ */
+export async function getDashboardInsight(datasetId?: string): Promise<string> {
+  const cacheKey = datasetId ?? "all";
+  const cached = insightCache.get(cacheKey);
+
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.text;
+  }
+
+  const cases = await loadCaseTimelines(datasetId);
+  const activityPerformance = computeActivityPerformance(cases);
+  const kpis = computeKpis(cases, activityPerformance);
+
+  const text = await generateDashboardInsight({ ...kpis, activityPerformance });
+
+  insightCache.set(cacheKey, { text, expiresAt: Date.now() + DASHBOARD_INSIGHT_CACHE_TTL_MS });
+
+  return text;
 }
 
 /**

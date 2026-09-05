@@ -210,3 +210,42 @@ export async function judgeAnswer(
     return { pass: false, reasoning: "judge response unparsable" };
   }
 }
+
+const INSIGHT_INSTRUCTION = `You are writing a one-to-two sentence plain-English summary for the top
+of an operations dashboard, aimed at a non-technical manager.
+
+Rules:
+- Only use the numbers given to you below. Never invent, estimate, or round
+  in a way that changes a figure's meaning.
+- Lead with the most useful takeaway (usually the bottleneck), not a list
+  of every number.
+- Plain, direct, confident tone — e.g. "Approvals are your slowest step,
+  averaging 4.2 days." No hedging, no "it looks like", no bullet points.
+- Output only the sentence(s), no preamble, no markdown.`;
+
+export type DashboardFacts = {
+  totalCases: number;
+  completedCases: number;
+  openCases: number;
+  completionRate: number;
+  avgCycleTimeHours: number;
+  medianCycleTimeHours: number;
+  bottleneckActivity: string | null;
+  bottleneckAvgDurationHours: number | null;
+  activityPerformance: { activity: string; avgDurationHours: number; occurrences: number }[];
+};
+
+/**
+ * The Phase 3 "plain-English auto-summary" for the dashboard. Reuses the
+ * same client/model as the chat agent and judge above, as a single
+ * non-chat call grounded strictly in the pre-computed facts passed in.
+ */
+export async function generateDashboardInsight(facts: DashboardFacts): Promise<string> {
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: `Dashboard data:\n${JSON.stringify(facts, null, 2)}`,
+    config: { systemInstruction: INSIGHT_INSTRUCTION },
+  });
+
+  return (response.text ?? "").trim();
+}
