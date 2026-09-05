@@ -47,3 +47,7 @@ backend/src/generated/prisma/
 # documents
 Phases.md
 Rules.md
+
+
+.agents/
+.claude/

@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import PublicRoute from './routes/PublicRoute'
+import PrivateRoute from './routes/PrivateRoute'
+
+// Stub elements — replaced page by page as each Phases.md phase is built.
+const Stub = ({ label }) => <div className="p-10 text-text">{label}</div>
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<Stub label="Landing — Phase 3" />} />
+          <Route path="/login" element={<Stub label="Login — Phase 3" />} />
+        </Route>
+
+        {/* Public: page itself decides real vs. demo data based on auth state */}
+        <Route path="/dashboard" element={<Stub label="Dashboard — Phase 4" />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/data" element={<Stub label="Data — Phase 5" />} />
+          <Route path="/chat" element={<Stub label="Chat — Phase 6" />} />
+          <Route path="/monitor" element={<Stub label="Monitor — Phase 7" />} />
+          <Route path="/evals" element={<Stub label="Evaluations — Phase 8" />} />
+          <Route path="/settings" element={<Stub label="Settings — Phase 9" />} />
+          <Route path="/document" element={<Stub label="SOPs — Phase 10 (stub)" />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
