@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/auth.context'
 import { useTheme } from '../theme/theme'
+import { useReveal } from '../hooks/useReveal'
 import { AlertCircle, Loader2, ArrowRight, Sun, Moon, ShieldCheck, Lock, Sparkles } from 'lucide-react'
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const { login } = useAuth()
   const { isDark, toggleTheme } = useTheme()
+  const [containerRef, containerRevealed] = useReveal(0.05)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -74,13 +76,18 @@ export default function LoginPage() {
         </button>
       </div>
 
-      {/* Main Centered Authentication Container */}
-      <div className="w-full max-w-md my-auto py-10 z-10">
+      {/* Main Centered Authentication Container with Reveal Animation */}
+      <div 
+        ref={containerRef}
+        className={`w-full max-w-md my-auto py-10 z-10 reveal-init ${
+          containerRevealed ? 'reveal-active' : ''
+        }`}
+      >
         
         {/* Brand Logo & Tagline */}
         <div className="flex flex-col items-center mb-8">
           <Link to="/" className="flex items-center gap-3 no-underline group mb-2">
-            <div className="w-10 h-10 bg-[#6D55FA] text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-[0_0_24px_rgba(109,85,250,0.5)] transition-transform duration-300 group-hover:scale-110">
+            <div className="w-10 h-10 bg-[#6D55FA] text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-[0_0_24px_rgba(109,85,250,0.5)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
               ⚡
             </div>
             <div className="flex flex-col">
@@ -96,14 +103,14 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        {/* Login Card with Smooth Entrance & Hover Lift */}
-        <div className={`rounded-3xl p-7 sm:p-9 relative overflow-hidden border shadow-xl transition-all duration-300 hover-card-lift ${
+        {/* Login Card with Smooth Entrance */}
+        <div className={`rounded-3xl p-7 sm:p-9 relative overflow-hidden border shadow-xl transition-all duration-300 ${
           isDark 
             ? 'bg-[#0F0E17] border-[#222033] shadow-[0_20px_50px_rgba(0,0,0,0.8)]' 
             : 'bg-white border-[#E2E5EE] shadow-[0_20px_50px_rgba(27,24,48,0.08)]'
         }`}>
           
-          <div className="absolute -top-20 -right-20 w-44 h-44 bg-[#6D55FA]/20 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -top-20 -right-20 w-44 h-44 bg-[#6D55FA]/20 rounded-full blur-2xl pointer-events-none animate-pulse-glow" />
 
           <div className="text-center mb-7">
             <h1 className={`font-editorial text-3xl font-normal tracking-tight ${
@@ -170,7 +177,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 bg-[#6D55FA] text-white font-semibold rounded-full hover:bg-[#5B41E8] active:bg-[#4C34C7] transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(109,85,250,0.4)] hover:shadow-[0_0_32px_rgba(109,85,250,0.65)] hover:-translate-y-0.5 text-sm mt-4 disabled:opacity-60 cursor-pointer group"
+              className="w-full py-3.5 bg-[#6D55FA] text-white font-semibold rounded-full hover:bg-[#5B41E8] active:bg-[#4C34C7] btn-interactive flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(109,85,250,0.4)] hover:shadow-[0_0_32px_rgba(109,85,250,0.65)] hover:-translate-y-0.5 text-sm mt-4 disabled:opacity-60 cursor-pointer group"
             >
               {isSubmitting ? (
                 <>
@@ -223,3 +230,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

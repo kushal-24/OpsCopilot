@@ -31,31 +31,7 @@ import {
   Code2
 } from 'lucide-react'
 
-// Custom hook for scroll-triggered reveals
-function useReveal(threshold = 0.15) {
-  const ref = useRef(null)
-  const [isRevealed, setIsRevealed] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsRevealed(true)
-          observer.unobserve(el)
-        }
-      },
-      { threshold }
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return [ref, isRevealed]
-}
+import { useReveal } from '../hooks/useReveal'
 
 
 
@@ -466,7 +442,7 @@ export default function LandingPage() {
           <div className="absolute -inset-4 bg-gradient-to-r from-[#6D55FA]/30 via-[#8B5CF6]/20 to-[#6D55FA]/30 rounded-3xl blur-3xl -z-10 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
 
           {/* Window Container */}
-          <div className={`rounded-2xl overflow-hidden text-left border shadow-2xl transition-all duration-300 hover-card-lift ${
+          <div className={`rounded-2xl overflow-hidden text-left border shadow-2xl transition-all duration-300 ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]' 
               : 'bg-white border-[#E2E5EE] shadow-[0_25px_60px_-15px_rgba(27,24,48,0.1)]'
@@ -739,7 +715,7 @@ export default function LandingPage() {
         {/* Workspace Card */}
         <div 
           ref={workspaceRef}
-          className={`rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden border shadow-xl transition-all duration-300 reveal-init hover-card-lift ${
+          className={`rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden border shadow-xl transition-all duration-300 reveal-init ${
             workspaceRevealed ? 'reveal-active' : ''
           } ${
             isDark 
@@ -786,8 +762,8 @@ export default function LandingPage() {
                   }}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-200 cursor-pointer ${
                     selectedDatasetId === ds.id
-                      ? 'bg-[#6D55FA] text-white shadow-sm font-semibold scale-102'
-                      : isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'
+                      ? 'bg-[#6D55FA] text-white shadow-sm font-semibold'
+                      : isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
                   }`}
                 >
                   {ds.label}
@@ -818,7 +794,7 @@ export default function LandingPage() {
                   <button
                     key={step.id}
                     onClick={() => setActiveStepId(step.id)}
-                    className={`text-left p-4 rounded-xl border transition-all duration-200 relative flex flex-col justify-between cursor-pointer group hover:-translate-y-1 ${
+                    className={`text-left p-4 rounded-xl border transition-all duration-200 relative flex flex-col justify-between cursor-pointer group ${
                       isSelected
                         ? isDark 
                           ? 'bg-[#181628] border-[#6D55FA] shadow-[0_0_20px_rgba(109,85,250,0.3)] ring-1 ring-[#6D55FA]' 
@@ -1115,7 +1091,7 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 hover-card-lift ${
+              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
                 isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
               }`}>
                 <div>
@@ -1127,12 +1103,12 @@ export default function LandingPage() {
                     Hero triggers, key form actions, and direct conversion.
                   </p>
                 </div>
-                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-xs transition-all shadow-[0_0_20px_rgba(109,85,250,0.4)] hover:shadow-[0_0_28px_rgba(109,85,250,0.65)] hover:-translate-y-0.5 cursor-pointer">
+                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-xs transition-all shadow-[0_0_20px_rgba(109,85,250,0.4)] hover:shadow-[0_0_28px_rgba(109,85,250,0.65)] cursor-pointer">
                   Request a Demo
                 </button>
               </div>
 
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 hover-card-lift ${
+              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
                 isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
               }`}>
                 <div>
@@ -1144,12 +1120,12 @@ export default function LandingPage() {
                     Vibrant halo glow for key highlighted CTA sections.
                   </p>
                 </div>
-                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] text-white font-semibold text-xs transition-all shadow-[0_0_30px_rgba(109,85,250,0.65)] hover:shadow-[0_0_40px_rgba(109,85,250,0.85)] hover:-translate-y-0.5 cursor-pointer">
+                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] text-white font-semibold text-xs transition-all shadow-[0_0_30px_rgba(109,85,250,0.65)] hover:shadow-[0_0_40px_rgba(109,85,250,0.85)] cursor-pointer">
                   Try Demo Mode →
                 </button>
               </div>
 
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 hover-card-lift ${
+              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
                 isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
               }`}>
                 <div>
@@ -1285,7 +1261,7 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm hover-card-lift ${
+          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] hover:border-[#6D55FA]/50' 
               : 'bg-white border-[#E2E5EE] hover:border-[#6D55FA]/50'
@@ -1309,7 +1285,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm hover-card-lift ${
+          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] hover:border-[#6D55FA]/50' 
               : 'bg-white border-[#E2E5EE] hover:border-[#6D55FA]/50'
@@ -1333,7 +1309,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm hover-card-lift ${
+          <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] hover:border-[#6D55FA]/50' 
               : 'bg-white border-[#E2E5EE] hover:border-[#6D55FA]/50'
@@ -1390,7 +1366,7 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             
-            <div className={`p-5 rounded-2xl border flex flex-col justify-between hover-card-lift ${
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
               <div>
@@ -1407,7 +1383,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className={`p-5 rounded-2xl border flex flex-col justify-between hover-card-lift ${
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
               <div>
@@ -1424,7 +1400,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className={`p-5 rounded-2xl border flex flex-col justify-between hover-card-lift ${
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
               <div>
@@ -1441,7 +1417,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className={`p-5 rounded-2xl border flex flex-col justify-between hover-card-lift ${
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
               <div>
@@ -1472,7 +1448,7 @@ export default function LandingPage() {
           ctaRevealed ? 'reveal-active' : ''
         }`}
       >
-        <div className={`relative rounded-3xl p-10 sm:p-14 overflow-hidden shadow-2xl border transition-all duration-300 hover-card-lift ${
+        <div className={`relative rounded-3xl p-10 sm:p-14 overflow-hidden shadow-2xl border transition-all duration-300 ${
           isDark 
             ? 'bg-gradient-to-b from-[#151422] to-[#0A0912] border-[#2A2742]' 
             : 'bg-gradient-to-b from-white to-[#F1F3F9] border-[#E2E5EE]'
