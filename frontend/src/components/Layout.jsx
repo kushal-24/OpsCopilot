@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Database, MessageSquare, Activity, ClipboardCheck, Settings, LogOut } from 'lucide-react'
+import { useTheme } from '../theme/theme'
+import { LayoutDashboard, Database, MessageSquare, Activity, ClipboardCheck, Settings, LogOut, Sun, Moon } from 'lucide-react'
 import { useAuth } from '../auth/auth.context'
 
 const NAV_ITEMS = [
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
 
 function Layout() {
   const { user, logout } = useAuth()
+  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
@@ -20,7 +22,7 @@ function Layout() {
   }
 
   return (
-    <div className="flex h-screen bg-bg text-text">
+    <div className="flex h-screen bg-bg text-text transition-colors">
       <aside className="flex w-16 flex-col items-center gap-1 border-r border-border bg-surface py-4">
         {NAV_ITEMS.map(({ to, label, icon }) => (
           <NavLink
@@ -39,15 +41,25 @@ function Layout() {
       </aside>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-5">
-          <span className="font-head text-lg font-semibold">OpsCopilot</span>
+        <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-5 transition-colors">
+          <div className="flex items-center gap-2">
+            <span className="text-primary font-bold text-lg">⚡</span>
+            <span className="font-head text-lg font-semibold">OpsCopilot</span>
+          </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              className="text-muted hover:text-text p-1 cursor-pointer"
+            >
+              {isDark ? <Sun size={18} className="text-warning" /> : <Moon size={18} className="text-primary" />}
+            </button>
             <NavLink to="/settings" title="Settings" className="text-muted hover:text-text">
               <Settings size={18} />
             </NavLink>
             <span className="text-sm text-muted">{user?.fullName}</span>
-            <button onClick={handleLogout} title="Log out" className="text-muted hover:text-text">
+            <button onClick={handleLogout} title="Log out" className="text-muted hover:text-text cursor-pointer">
               <LogOut size={18} />
             </button>
           </div>

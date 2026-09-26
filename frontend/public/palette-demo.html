@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpsCopilot — Telemetry Color & Layout Demo</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Telemetry Tokens - Light Mode */
+      --color-bg: #EEF1F3;
+      --color-surface: #FFFFFF;
+      --color-surface-2: #F6F8F9;
+      --color-border: #D7DEE3;
+      
+      --color-text: #10161B;
+      --color-muted: #5C6B74;
+      
+      --color-primary: #0E7C90;
+      --color-primary-fg: #F0FBFD;
+      --color-primary-hover: #0b6373;
+      
+      --color-success: #1E9E5A;
+      --color-success-bg: #E8F7EF;
+      --color-warning: #C98A1D;
+      --color-danger: #D64545;
+      
+      --color-ai-bg: #F5F2FB;
+      --color-ai-border: #DCD2EE;
+      --color-ai-badge-bg: #5B4B8A;
+      --color-ai-badge-fg: #F3EFFA;
+      
+      --font-head: 'Archivo', system-ui, sans-serif;
+      --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      
+      --radius-card: 8px;
+      --radius-input: 4px;
+      --radius-pill: 9999px;
+      
+      --shadow-card: 0 1px 3px rgba(16, 22, 27, 0.08);
+      --shadow-ring: 0 0 0 3px rgba(14, 124, 144, 0.2);
+    }
+    
+    .dark {
+      /* Telemetry Tokens - Dark Mode */
+      --color-bg: #0D1216;
+      --color-surface: #131A20;
+      --color-surface-2: #182028;
+      --color-border: #263139;
+      
+      --color-text: #E7EDF0;
+      --color-muted: #8A98A1;
+      
+      --color-primary: #2FD0E8;
+      --color-primary-fg: #04191D;
+      --color-primary-hover: #58dbef;
+      
+      --color-success: #3FCB8A;
+      --color-success-bg: #0d2b1d;
+      --color-warning: #E3A83B;
+      --color-danger: #F16565;
+      
+      --color-ai-bg: #171325;
+      --color-ai-border: #332C4C;
+      --color-ai-badge-bg: #9284CE;
+      --color-ai-badge-fg: #171325;
+      
+      --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.4);
+      --shadow-ring: 0 0 0 3px rgba(47, 208, 232, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      min-height: 100vh;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      background-image: radial-gradient(circle at 50% 0%, rgba(14, 124, 144, 0.08) 0%, transparent 60%);
+    }
+
+    /* Dot Grid Background Texture */
+    .bg-dot-grid {
+      background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--color-primary);
+      color: var(--color-primary-fg);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .tag-badge {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      color: var(--color-muted);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--radius-input);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-primary-fg);
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      border-color: var(--color-border);
+    }
+    .btn-secondary:hover {
+      background: var(--color-border);
+    }
+
+    .btn-outline {
+      border-color: var(--color-border);
+      color: var(--color-text);
+      background: transparent;
+    }
+    .btn-outline:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .theme-toggle {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding: 6px 12px;
+      border-radius: var(--radius-input);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      max-width: 840px;
+      margin: 0 auto 56px auto;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-ai-bg);
+      border: 1px solid var(--color-ai-border);
+      color: var(--color-ai-badge-bg);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--color-muted);
+      margin-bottom: 32px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    /* Swatches Grid Section */
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .swatch-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .swatch-box {
+      height: 64px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Telemetry Demo Card */
+    .demo-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 48px;
+    }
+
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .demo-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 32px; }
+    }
+
+    .metric-panel {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 20px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .stat-val {
+      font-family: var(--font-head);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .badge-success {
+      background: var(--color-success-bg);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* AI Copilot Card */
+    .ai-panel {
+      background: var(--color-ai-bg);
+      border: 1px solid var(--color-ai-border);
+      border-radius: var(--radius-card);
+      padding: 20px;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-ai-badge-bg);
+      color: var(--color-ai-badge-fg);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .sql-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-ai-border);
+      border-radius: var(--radius-input);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--color-text);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body class="bg-dot-grid">
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">⚡</div>
+        <span>OpsCopilot</span>
+        <span class="tag-badge">Telemetry Design System</span>
+      </a>
+      <div class="nav-actions">
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Mode</button>
+        <a href="#" class="btn btn-outline">Login</a>
+        <a href="#" class="btn btn-primary">Try Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-pill">✨ Grounded AI Process Mining & Telemetry</div>
+      <h1>Autonomous Insights for Ops Data & Workflow Event Logs</h1>
+      <p>Transform raw event logs into instant bottleneck identification, throughput metrics, and grounded AI copilot answers.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary" style="padding: 12px 24px; font-size: 15px;">Try Demo Mode</a>
+        <a href="#" class="btn btn-secondary" style="padding: 12px 24px; font-size: 15px;">Login</a>
+        <a href="#" class="btn btn-outline" style="padding: 12px 24px; font-size: 15px;">Create Account</a>
+      </div>
+    </section>
+
+    <!-- Color Palette Swatches -->
+    <section>
+      <h2 class="section-title">🎨 Active Color Token Breakdown</h2>
+      <div class="swatch-grid">
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--color-primary); color: var(--color-primary-fg);">
+            Primary Teal (#0E7C90)
+          </div>
+          <strong>Primary Interactive</strong>
+          <p style="font-size: 13px; color: var(--color-muted);">CTAs, navigation focus, buttons, active highlights.</p>
+        </div>
+
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--color-ai-badge-bg); color: var(--color-ai-badge-fg);">
+            AI Violet (#5B4B8A)
+          </div>
+          <strong>AI Copilot Accent</strong>
+          <p style="font-size: 13px; color: var(--color-muted);">LLM outputs, streaming answers, Trust panels.</p>
+        </div>
+
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--color-success); color: #fff;">
+            Emerald Green (#1E9E5A)
+          </div>
+          <strong>Success / SLA</strong>
+          <p style="font-size: 13px; color: var(--color-muted);">Evaluation accuracy, SLA passes, status indicators.</p>
+        </div>
+
+        <div class="swatch-card">
+          <div class="swatch-box" style="background: var(--color-surface-2); color: var(--color-text); border: 1px solid var(--color-border);">
+            Slate Surface (#F6F8F9)
+          </div>
+          <strong>Surfaces & Backgrounds</strong>
+          <p style="font-size: 13px; color: var(--color-muted);">Card surfaces, inner containers, border dividers.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Telemetry Card Demo -->
+    <section>
+      <h2 class="section-title">📊 Live Component Preview in Context</h2>
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <h3 style="font-family: var(--font-head); font-size: 18px;">Order Fulfillment Process Mining</h3>
+            <p style="font-size: 13px; color: var(--color-muted);">Dataset: 14,280 event log rows • Last updated 2 mins ago</p>
+          </div>
+          <span class="badge-success">✓ SLA COMPLIANT (98.4%)</span>
+        </div>
+
+        <div class="demo-grid">
+          <!-- Metric Panel -->
+          <div class="metric-panel">
+            <h4 style="font-size: 14px; color: var(--color-muted); font-family: var(--font-mono); margin-bottom: 8px;">CYCLE TIME TELEMETRY</h4>
+            <div class="stat-val">1.4 Days</div>
+            <p style="font-size: 13px; color: var(--color-success); margin-top: 4px;">↓ 18.2% faster than last month</p>
+            
+            <div class="stat-row">
+              <span style="font-size: 13px; color: var(--color-muted);">Slowest Step:</span>
+              <strong style="font-size: 13px;">Manager Approval (3.8 days)</strong>
+            </div>
+          </div>
+
+          <!-- AI Copilot Panel -->
+          <div class="ai-panel">
+            <div class="ai-badge">✦ AI COPILOT INSIGHT</div>
+            <p style="font-size: 14px; font-weight: 500;">
+              "Manager Approval is your primary bottleneck — averaging 3.8 days (3.2x higher than target SLA)."
+            </p>
+            <div class="sql-box">
+              <span style="color: var(--color-muted); font-size: 11px;">TRUST PANEL — VERIFIED QUERY:</span><br>
+              <code>SELECT step_name, AVG(duration_seconds)/86400 FROM events GROUP BY step_name ORDER BY 2 DESC;</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>

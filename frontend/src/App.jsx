@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import PublicRoute from './routes/PublicRoute'
 import PrivateRoute from './routes/PrivateRoute'
 import Layout from './components/Layout'
+import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 
 // Stub elements — replaced page by page as each Phases.md phase is built.
 const Stub = ({ label }) => <div className="p-10 text-text">{label}</div>
@@ -10,12 +13,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth-free: always accessible, no redirect either way */}
-        <Route path="/" element={<Stub label="Landing — Phase 3" />} />
+        {/* Auth-free: landing page is always accessible */}
+        <Route path="/" element={<LandingPage />} />
 
+        {/* Public auth routes: redirect to /dashboard if already logged in */}
         <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Stub label="Login — Phase 3" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Route>
+
 
         <Route element={<Layout />}>
           {/* Public: page itself decides real vs. demo data based on auth state */}
