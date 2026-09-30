@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
+import DataPage from './pages/DataPage'
 
 import { Activity } from 'lucide-react'
 
@@ -53,7 +54,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
 
           <Route element={<PrivateRoute />}>
-            <Route path="/data" element={<Stub label="Data — Phase 5" />} />
+            <Route path="/data" element={<DataPage />} />
             <Route path="/chat" element={<Stub label="Chat — Phase 6" />} />
             <Route path="/monitor" element={<Stub label="Monitor — Phase 7" />} />
             <Route path="/evals" element={<Stub label="Evaluations — Phase 8" />} />
