@@ -66,7 +66,7 @@ export async function runAgentTurn(
     model: MODEL,
     config: {
       systemInstruction: SYSTEM_INSTRUCTION,
-      tools: [{ functionDeclarations: toolDeclarations }],
+      tools: [{ functionDeclarations: toolDeclarations as any }],
       toolConfig: {
         functionCallingConfig: { mode: FunctionCallingConfigMode.AUTO },
       },

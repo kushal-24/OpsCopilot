@@ -57,7 +57,7 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
-  const incoming = req.cookies?.refreshToken || req.body.refreshToken;
+  const incoming = req.cookies?.refreshToken || req.body?.refreshToken;
 
   if (!incoming) {
     throw new apiError(401, "Refresh token is required");

@@ -19,7 +19,7 @@ export const listSessions = asyncHandler(async (req: Request, res: Response) => 
 export const getSessionMessages = asyncHandler(
   async (req: Request, res: Response) => {
     const messages = await chatService.getSessionMessages(
-      req.params.sessionId,
+      req.params.sessionId as string,
       req.user!.id
     );
 
@@ -35,7 +35,7 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const result = await chatService.sendMessage(
-    req.params.sessionId,
+    req.params.sessionId as string,
     req.user!.id,
     content.trim()
   );
@@ -44,7 +44,7 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const deleteSession = asyncHandler(async (req: Request, res: Response) => {
-  await chatService.deleteSession(req.params.sessionId, req.user!.id);
+  await chatService.deleteSession(req.params.sessionId as string, req.user!.id);
 
   res.status(200).json(new apiResponse(null, 200, "Chat session deleted"));
 });

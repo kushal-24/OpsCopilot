@@ -23,7 +23,7 @@ export const listRuns = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getRunById = asyncHandler(async (req: Request, res: Response) => {
-  const data = await evalService.getRunById(req.params.runId);
+  const data = await evalService.getRunById(req.params.runId as string);
 
   res.status(200).json(new apiResponse(data, 200, "Eval run fetched"));
 });
