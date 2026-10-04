@@ -183,8 +183,8 @@ export default function LandingPage() {
           
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
-            <div className="w-8 h-8 rounded-lg bg-[#6D55FA] flex items-center justify-center text-white font-bold text-sm shadow-[0_0_20px_rgba(109,85,250,0.5)] transition-transform duration-200 group-hover:scale-105">
-              ⚡
+            <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(109,85,250,0.5)] transition-transform duration-200 group-hover:scale-105">
+              <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
             </div>
             <span className={`font-head font-bold text-xl tracking-tight transition-colors ${
               isDark ? 'text-white group-hover:text-white/90' : 'text-[#0F0E17] group-hover:text-[#6D55FA]'
@@ -503,8 +503,8 @@ export default function LandingPage() {
                 <div className="space-y-4 text-xs leading-relaxed">
                   
                   <div className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#6D55FA] text-white flex items-center justify-center text-xs shrink-0 font-bold shadow-sm">
-                      ⚡
+                    <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-sm">
+                      <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
                     </div>
                     <div className={`p-3.5 rounded-2xl rounded-tl-sm border max-w-lg shadow-xs ${
                       isDark 
@@ -531,8 +531,8 @@ export default function LandingPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-[#6D55FA] text-white flex items-center justify-center text-xs shrink-0 font-bold shadow-sm">
-                      ⚡
+                    <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-sm">
+                      <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
                     </div>
                     <div className={`p-3.5 rounded-2xl rounded-tl-sm border max-w-lg shadow-xs space-y-2 ${
                       isDark 
@@ -733,10 +733,8 @@ export default function LandingPage() {
           }`}>
             <div>
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
-                  isDark ? 'bg-[#6D55FA]/20 text-[#A78BFA]' : 'bg-[#6D55FA]/10 text-[#6D55FA]'
-                }`}>
-                  ⚡
+                <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 shadow-xs">
+                  <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
                 </div>
                 <h2 className={`font-head text-xl sm:text-2xl font-bold tracking-tight ${
                   isDark ? 'text-white' : 'text-[#0F0E17]'
@@ -1500,8 +1498,8 @@ export default function LandingPage() {
         }`}>
           
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 rounded-md bg-[#6D55FA] text-white flex items-center justify-center font-bold text-xs shadow-sm">
-              ⚡
+            <div className="w-6 h-6 rounded-md overflow-hidden shrink-0 shadow-sm">
+              <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
             </div>
             <span className={`font-head font-bold text-sm ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
               OpsCopilot

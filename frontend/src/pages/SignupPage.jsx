@@ -90,8 +90,8 @@ export default function SignupPage() {
         {/* Brand Logo & Tagline */}
         <div className="flex flex-col items-center mb-8">
           <Link to="/" className="flex items-center gap-3 no-underline group mb-2">
-            <div className="w-10 h-10 bg-[#6D55FA] text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-[0_0_24px_rgba(109,85,250,0.5)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-              ⚡
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_24px_rgba(109,85,250,0.5)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+              <img src="/logo.png" alt="OpsCopilot Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col">
               <span className={`font-head font-bold text-2xl leading-none tracking-tight ${

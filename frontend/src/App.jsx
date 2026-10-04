@@ -9,6 +9,8 @@ import DashboardPage from './pages/DashboardPage'
 import DataPage from './pages/DataPage'
 import ChatPage from './pages/ChatPage'
 import MonitorPage from './pages/MonitorPage'
+import EvalsPage from './pages/EvalsPage'
+import SettingsPage from './pages/SettingsPage'
 
 import { Activity } from 'lucide-react'
 
@@ -18,8 +20,8 @@ const Stub = ({ label }) => (
     <div className="rounded-3xl p-8 bg-surface border border-border shadow-xl relative overflow-hidden transition-all duration-300">
       <div className="absolute -top-16 -right-16 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none animate-pulse-glow" />
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg animate-scale-in">
-          ⚡
+        <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center font-bold text-lg animate-scale-in overflow-hidden">
+          <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover rounded-2xl" />
         </div>
         <div>
           <h2 className="font-head text-2xl font-bold text-text tracking-tight flex items-center gap-2">
@@ -59,8 +61,8 @@ function App() {
             <Route path="/data" element={<DataPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/monitor" element={<MonitorPage />} />
-            <Route path="/evals" element={<Stub label="Evaluations — Phase 8" />} />
-            <Route path="/settings" element={<Stub label="Settings — Phase 9" />} />
+            <Route path="/evals" element={<EvalsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             <Route path="/document" element={<Stub label="SOPs — Phase 10 (stub)" />} />
           </Route>
         </Route>

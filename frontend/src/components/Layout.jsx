@@ -32,9 +32,9 @@ function Layout() {
         <NavLink 
           to="/"
           title="Back to Landing Page"
-          className="mb-2 w-10 h-10 bg-[#6D55FA] text-white rounded-xl flex items-center justify-center font-bold text-base shadow-[0_0_16px_rgba(109,85,250,0.5)] transition-transform duration-300 hover:scale-110 hover:rotate-6 cursor-pointer"
+          className="mb-2 w-10 h-10 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer"
         >
-          ⚡
+          <img src="/logo.png" alt="OpsCopilot Logo" className="w-9 h-9 rounded-xl object-cover shadow-[0_0_16px_rgba(109,85,250,0.5)]" />
         </NavLink>
         {NAV_ITEMS.map(({ to, label, icon }) => (
           <NavLink
@@ -57,7 +57,7 @@ function Layout() {
       <div className="flex flex-1 flex-col overflow-hidden z-10">
         <header className="flex h-14 items-center justify-between border-b border-border bg-surface/90 backdrop-blur-md px-5 transition-colors">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <span className="text-primary font-bold text-lg transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">⚡</span>
+            <img src="/logo.png" alt="OpsCopilot Logo" className="w-6 h-6 rounded-lg object-cover transition-transform duration-300 group-hover:scale-110" />
             <span className="font-head text-lg font-semibold tracking-tight">OpsCopilot</span>
             <span className="ml-2 text-[10px] font-mono px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 animate-pulse-glow">
               Telemetry Studio
