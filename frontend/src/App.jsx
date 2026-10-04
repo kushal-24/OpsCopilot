@@ -8,6 +8,7 @@ import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
 import DataPage from './pages/DataPage'
 import ChatPage from './pages/ChatPage'
+import MonitorPage from './pages/MonitorPage'
 
 import { Activity } from 'lucide-react'
 
@@ -57,7 +58,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/data" element={<DataPage />} />
             <Route path="/chat" element={<ChatPage />} />
-            <Route path="/monitor" element={<Stub label="Monitor — Phase 7" />} />
+            <Route path="/monitor" element={<MonitorPage />} />
             <Route path="/evals" element={<Stub label="Evaluations — Phase 8" />} />
             <Route path="/settings" element={<Stub label="Settings — Phase 9" />} />
             <Route path="/document" element={<Stub label="SOPs — Phase 10 (stub)" />} />
