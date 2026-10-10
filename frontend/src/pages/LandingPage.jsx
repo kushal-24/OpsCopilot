@@ -89,44 +89,13 @@ ORDER BY avg_hours DESC;`,
   }
 ]
 
-// The Complete Electric Violet & Obsidian Color Palette System
-const PALETTE_SHADES = [
-  { step: '50', hex: '#F5F3FF', label: 'Violet Tint', use: 'Highlight overlays, subtle glows' },
-  { step: '100', hex: '#EDE9FE', label: 'Violet Soft', use: 'Active badge backgrounds' },
-  { step: '200', hex: '#DDD6FE', label: 'Violet Muted', use: 'Subtle interactive borders' },
-  { step: '300', hex: '#C4B5FD', label: 'Violet Light', use: 'Secondary text accents' },
-  { step: '400', hex: '#A78BFA', label: 'Violet Bright', use: 'Icon badges, active pill text' },
-  { step: '500', hex: '#8B5CF6', label: 'Violet Vibrant', use: 'Glowing halos, hover accents' },
-  { step: '600', hex: '#6D55FA', label: 'Primary Brand CTA', use: 'Hero button, main interactive trigger' },
-  { step: '700', hex: '#5B41E8', label: 'Primary Hover', use: 'CTA hover and focus state' },
-  { step: '800', hex: '#4C34C7', label: 'Primary Active', use: 'Pressed / active state' },
-  { step: '900', hex: '#312082', label: 'Deep Violet', use: 'Tinted dark panel surfaces' },
-  { step: '950', hex: '#1E134D', label: 'Void Violet', use: 'Ambient background glow base' },
-]
-
-const OBSIDIAN_SHADES = [
-  { name: 'Canvas Void', hex: '#08070C', role: 'Dark mode main background depth' },
-  { name: 'Obsidian Card', hex: '#0F0E17', role: 'Dark mode primary card & hero window' },
-  { name: 'Elevated Panel', hex: '#151422', role: 'Dark mode sub-containers & inputs' },
-  { name: 'Border Subtle', hex: '#222033', role: 'Dark mode dividers & borders' },
-]
-
-const LIGHT_SURFACE_SHADES = [
-  { name: 'Canvas Modern Off-White', hex: '#F8F9FC', role: 'Light mode clean background depth' },
-  { name: 'Surface Pure White', hex: '#FFFFFF', role: 'Light mode elevated card & window' },
-  { name: 'Panel Sub-Container', hex: '#F1F3F9', role: 'Light mode sub-containers & metrics' },
-  { name: 'Border Slate-Subtle', hex: '#E2E5EE', role: 'Light mode clean dividers & borders' },
-]
-
 export default function LandingPage() {
   const { isDark, toggleTheme } = useTheme()
   const [selectedDatasetId, setSelectedDatasetId] = useState('orders')
   const [activeStepId, setActiveStepId] = useState(2) // Default to bottleneck step
   const [showSqlQuery, setShowSqlQuery] = useState(true)
   const [copiedSql, setCopiedSql] = useState(false)
-  const [copiedHex, setCopiedHex] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeSurfaceTab, setActiveSurfaceTab] = useState(isDark ? 'dark' : 'light')
 
   // Reveal hooks for sections
   const [heroRef, heroRevealed] = useReveal(0.05)
@@ -143,12 +112,6 @@ export default function LandingPage() {
     navigator.clipboard.writeText(activeDataset.sql)
     setCopiedSql(true)
     setTimeout(() => setCopiedSql(false), 2000)
-  }
-
-  const handleCopyHex = (hex) => {
-    navigator.clipboard.writeText(hex)
-    setCopiedHex(hex)
-    setTimeout(() => setCopiedHex(null), 2000)
   }
 
   const scrollToSection = (id) => {
@@ -202,12 +165,6 @@ export default function LandingPage() {
               className={`transition-colors cursor-pointer ${isDark ? 'hover:text-white' : 'hover:text-[#0F0E17]'}`}
             >
               Interactive Console
-            </button>
-            <button 
-              onClick={() => scrollToSection('palette-showcase')} 
-              className={`transition-colors cursor-pointer ${isDark ? 'hover:text-white' : 'hover:text-[#0F0E17]'}`}
-            >
-              Color Palette
             </button>
             <button 
               onClick={() => scrollToSection('capabilities')} 
@@ -308,12 +265,6 @@ export default function LandingPage() {
                 Interactive Console
               </button>
               <button 
-                onClick={() => scrollToSection('palette-showcase')} 
-                className={`block w-full text-left py-2 px-1 text-sm font-medium rounded-lg ${isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'}`}
-              >
-                Color Palette
-              </button>
-              <button 
                 onClick={() => scrollToSection('capabilities')} 
                 className={`block w-full text-left py-2 px-1 text-sm font-medium rounded-lg ${isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'}`}
               >
@@ -357,70 +308,60 @@ export default function LandingPage() {
         }`}
       >
         
-        {/* Live Feature Announcement Pill */}
-        <div className={`inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-mono mb-8 shadow-sm backdrop-blur-md border transition-transform hover:scale-105 ${
+        {/* Technical Platform Badge */}
+        <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-mono mb-8 border ${
           isDark 
-            ? 'bg-[#151422]/90 border-[#2A2742] text-[#D1D5DB]' 
-            : 'bg-white/90 border-[#E2E5EE] text-[#4A455A]'
+            ? 'bg-[#151422] border-[#222033] text-[#94A3B8]' 
+            : 'bg-[#F1F3F9] border-[#E2E5EE] text-[#475569]'
         }`}>
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
-          </span>
-          <span className="text-[#16A34A] dark:text-[#22C55E] font-semibold">New:</span>
-          <span>Grounded Process Mining 2.0 is live</span>
+          <Activity className="w-3.5 h-3.5 text-[#6D55FA]" />
+          <span>PROCESS MINING & EVENT LOG TELEMETRY PLATFORM</span>
         </div>
 
-        {/* Editorial Serif Hero Title */}
-        <h1 className={`font-editorial text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-[1.12] mb-6 max-w-4xl ${
+        {/* Clear Technical Hero Title */}
+        <h1 className={`font-head text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.15] mb-6 max-w-4xl ${
           isDark ? 'text-white' : 'text-[#0F0E17]'
         }`}>
-          Your AI Process Copilot <br />
-          <span className={`italic font-light ${isDark ? 'text-white/95' : 'text-[#2B273A]'}`}>
-            That Never Sleeps
-          </span>
+          Real-Time Process Mining & <br className="hidden sm:block" />
+          Operational Telemetry
         </h1>
 
         {/* Hero Subtitle */}
-        <p className={`text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed mb-10 font-normal ${
+        <p className={`text-base sm:text-lg max-w-2xl leading-relaxed mb-10 ${
           isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
         }`}>
-          OpsCopilot discovers bottlenecks, computes throughput telemetry, and answers operational questions with verifiable PostgreSQL trust panels.
+          Ingest transactional event logs, isolate hidden SLA bottlenecks across Order-to-Cash and IT workflows, and query operational state with fully audited Text-to-SQL traces.
         </p>
 
-        {/* ── ACTION BUTTON CLUSTER (3 Decided Button Variants with smooth hover lift) ── */}
+        {/* ── ACTION BUTTON CLUSTER ── */}
         <div className="flex flex-wrap items-center justify-center gap-3.5 mb-4">
           
           <Link
             to="/dashboard"
-            className="px-7 py-3.5 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-sm transition-all duration-200 shadow-[0_0_30px_rgba(109,85,250,0.5)] hover:shadow-[0_0_40px_rgba(109,85,250,0.75)] hover:-translate-y-0.5 cursor-pointer inline-flex items-center gap-2 group"
+            className="px-7 py-3 rounded-xl bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-sm transition-all duration-200 cursor-pointer inline-flex items-center gap-2 group shadow-sm"
           >
-            <span>Try Demo Mode</span>
+            <span>Explore Telemetry Console</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
 
           <button
             onClick={() => scrollToSection('telemetry-workspace')}
-            className={`px-6 py-3.5 rounded-full font-medium text-sm transition-all duration-200 backdrop-blur-md cursor-pointer inline-flex items-center gap-2.5 group border hover:-translate-y-0.5 ${
+            className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer inline-flex items-center gap-2 group border ${
               isDark 
-                ? 'bg-[#151422]/90 hover:bg-[#1E1C30] text-white border-[#2A2742] hover:border-[#6D55FA]/50' 
-                : 'bg-white hover:bg-[#F5F3FF] text-[#0F0E17] border-[#E2E5EE] hover:border-[#6D55FA] hover:text-[#6D55FA] shadow-xs'
+                ? 'bg-[#151422] hover:bg-[#1E1C30] text-white border-[#2A2742]' 
+                : 'bg-white hover:bg-[#F5F3FF] text-[#0F0E17] border-[#E2E5EE] shadow-2xs'
             }`}
           >
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${
-              isDark ? 'bg-white/10 text-white group-hover:bg-[#6D55FA]' : 'bg-[#6D55FA]/10 text-[#6D55FA] group-hover:bg-[#6D55FA] group-hover:text-white'
-            }`}>
-              <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
-            </div>
-            <span>Watch Product Tour</span>
+            <Play className="w-3.5 h-3.5 text-[#6D55FA] fill-current" />
+            <span>Interactive Demo</span>
           </button>
 
           <Link
             to="/login"
-            className={`px-6 py-3.5 rounded-full font-medium text-sm transition-all duration-200 cursor-pointer border hover:-translate-y-0.5 ${
+            className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer border ${
               isDark 
-                ? 'bg-[#0F0E17] hover:bg-[#151422] text-[#E2E8F0] border-[#222033] hover:border-[#94A3B8]/40' 
-                : 'bg-[#F1F3F9] hover:bg-white text-[#0F0E17] border-[#E2E5EE] hover:border-[#6D55FA] shadow-2xs'
+                ? 'bg-[#0F0E17] hover:bg-[#151422] text-[#E2E8F0] border-[#222033]' 
+                : 'bg-[#F1F3F9] hover:bg-white text-[#0F0E17] border-[#E2E5EE] shadow-2xs'
             }`}
           >
             Login
@@ -428,19 +369,16 @@ export default function LandingPage() {
 
         </div>
 
-        {/* Small reassurance tag below buttons */}
+        {/* Technical specs tag below buttons */}
         <p className={`text-xs font-mono mt-2 mb-14 ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-          No credit card required • Instant interactive sandbox • Deterministic SQL
+          IEEE 1849 XES / CSV • PostgreSQL Audited • Deterministic SQL
         </p>
 
         {/* ──────────────────────────────────────────────────────────────────────────
-            HERO APP WINDOW MOCKUP (Hover Lift Micro-interaction)
+            HERO APP WINDOW MOCKUP
            ────────────────────────────────────────────────────────────────────────── */}
         <div className="w-full max-w-4xl relative mt-4 group">
           
-          {/* Behind-window ambient radial luminescence */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-[#6D55FA]/30 via-[#8B5CF6]/20 to-[#6D55FA]/30 rounded-3xl blur-3xl -z-10 opacity-70 transition-opacity duration-300 group-hover:opacity-90" />
-
           {/* Window Container */}
           <div className={`rounded-2xl overflow-hidden text-left border shadow-2xl transition-all duration-300 ${
             isDark 
@@ -650,43 +588,7 @@ export default function LandingPage() {
 
       </section>
 
-      {/* ──────────────────────────────────────────────────────────────────────────
-          TRUSTED BY LOGO CLOUD
-         ────────────────────────────────────────────────────────────────────────── */}
-      <section className={`relative z-10 py-10 border-y text-center transition-colors ${
-        isDark 
-          ? 'border-[#222033]/60 bg-[#08070C]/60' 
-          : 'border-[#E2E5EE] bg-[#F1F3F9]/60'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <p className={`text-xs font-mono uppercase tracking-widest mb-8 font-medium ${
-            isDark ? 'text-[#64748B]' : 'text-[#64748B]'
-          }`}>
-            TRUSTED BY FAST-GROWING SAAS TEAMS & OPERATIONS LEADERS
-          </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 md:gap-18 opacity-50 grayscale hover:grayscale-0 hover:opacity-90 transition-all duration-300">
-            <div className={`flex items-center gap-2 text-xl font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span className="font-extrabold text-2xl">stripe</span>
-            </div>
-            <div className={`flex items-center gap-1.5 text-xl font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span>aws</span>
-            </div>
-            <div className={`flex items-center gap-2 text-lg font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span>Intercom</span>
-            </div>
-            <div className={`flex items-center gap-2 text-lg font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span>Figma</span>
-            </div>
-            <div className={`flex items-center gap-2 text-lg font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span>HubSpot</span>
-            </div>
-            <div className={`flex items-center gap-2 text-lg font-bold font-head tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-              <span>PostgreSQL</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ──────────────────────────────────────────────────────────────────────────
           PROBLEM STATEMENT SECTION
@@ -978,263 +880,7 @@ export default function LandingPage() {
 
       </section>
 
-      {/* ──────────────────────────────────────────────────────────────────────────
-          DEDICATED COLOR PALETTE & 3 BUTTON VARIANTS LABORATORY
-         ────────────────────────────────────────────────────────────────────────── */}
-      <section 
-        id="palette-showcase" 
-        ref={paletteRef}
-        className={`relative z-10 py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t reveal-init ${
-          paletteRevealed ? 'reveal-active' : ''
-        } ${isDark ? 'border-[#222033]/80' : 'border-[#E2E5EE]'}`}
-      >
-        
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6D55FA]/10 border border-[#6D55FA]/30 text-xs font-mono text-[#6D55FA] mb-4">
-            🎨 Design Template 2 Architecture
-          </div>
-          <h2 className={`font-editorial text-4xl sm:text-5xl font-normal tracking-tight mb-4 ${
-            isDark ? 'text-white' : 'text-[#0F0E17]'
-          }`}>
-            Full Theme Palette & The 3 Standard Button Variants
-          </h2>
-          <p className={`text-sm sm:text-base leading-relaxed ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
-            Click any swatch to copy its exact hex code. Below you can preview the 3 standardized button variants and the surface layer tokens for both Dark Obsidian and Crisp Light Mode.
-          </p>
-        </div>
 
-        {/* 11-Step Electric Violet Shade Scale */}
-        <div className={`rounded-3xl p-6 sm:p-8 mb-10 border shadow-lg transition-colors ${
-          isDark ? 'bg-[#0F0E17] border-[#222033]' : 'bg-white border-[#E2E5EE]'
-        }`}>
-          <div className={`flex items-center justify-between mb-6 pb-4 border-b ${
-            isDark ? 'border-[#222033]' : 'border-[#E2E5EE]'
-          }`}>
-            <div>
-              <h3 className={`font-head font-bold text-lg ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-                Electric Violet Scale (50 – 950)
-              </h3>
-              <p className={`text-xs font-mono ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                Primary brand accent, interactive triggers, glowing halos, and Trust panel badges
-              </p>
-            </div>
-            <span className="text-xs font-mono text-[#6D55FA] bg-[#6D55FA]/10 px-3 py-1 rounded-full border border-[#6D55FA]/20 font-bold">
-              Primary: #6D55FA
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11 gap-3">
-            {PALETTE_SHADES.map((s) => {
-              const isCopied = copiedHex === s.hex
-              const isHeroCTA = s.step === '600'
-
-              return (
-                <button
-                  key={s.step}
-                  onClick={() => handleCopyHex(s.hex)}
-                  className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer group flex flex-col justify-between relative hover:-translate-y-1 ${
-                    isHeroCTA 
-                      ? 'border-[#6D55FA] bg-[#6D55FA]/10 shadow-[0_0_15px_rgba(109,85,250,0.3)] ring-1 ring-[#6D55FA]' 
-                      : isDark
-                        ? 'border-[#222033] bg-[#13121F] hover:border-[#6D55FA]/50 hover:bg-[#151422]'
-                        : 'border-[#E2E5EE] bg-[#F8F9FC] hover:border-[#6D55FA]/50 hover:bg-white'
-                  }`}
-                  title={`Click to copy ${s.hex}`}
-                >
-                  {isHeroCTA && (
-                    <span className="absolute -top-2 left-2 bg-[#6D55FA] text-white text-[9px] font-mono px-1.5 py-0.2 rounded font-bold uppercase tracking-wider">
-                      CTA
-                    </span>
-                  )}
-
-                  <div 
-                    className="w-full h-10 rounded-lg mb-2.5 shadow-inner transition-transform group-hover:scale-105"
-                    style={{ backgroundColor: s.hex }}
-                  />
-
-                  <div>
-                    <div className={`flex items-center justify-between text-[11px] font-mono font-bold ${
-                      isDark ? 'text-white' : 'text-[#0F0E17]'
-                    }`}>
-                      <span>{s.step}</span>
-                      <span className="text-[10px] text-[#6D55FA]">{isCopied ? 'Copied!' : s.hex}</span>
-                    </div>
-                    <div className={`text-[10px] mt-0.5 line-clamp-1 ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                      {s.label}
-                    </div>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* CTA Button Style Laboratory (3 Standard Variants + Surfaces) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
-          
-          <div className={`lg:col-span-7 rounded-3xl p-6 sm:p-8 border ${
-            isDark ? 'bg-[#0F0E17] border-[#222033]' : 'bg-white border-[#E2E5EE]'
-          }`}>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className={`font-head font-bold text-lg ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-                The 3 Standard Button Variants
-              </h3>
-              <span className="text-xs font-mono text-[#6D55FA] bg-[#6D55FA]/10 px-2.5 py-0.5 rounded-full border border-[#6D55FA]/20">
-                Standardized
-              </span>
-            </div>
-            <p className={`text-xs mb-6 ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
-              Consistent interactive hierarchy across the application for high clarity and uniformity:
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
-                isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
-              }`}>
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>01. Solid Violet</span>
-                    <span className="text-[9px] font-mono text-[#16A34A] dark:text-[#4ADE80] font-bold">Primary</span>
-                  </div>
-                  <p className={`text-[11px] ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                    Hero triggers, key form actions, and direct conversion.
-                  </p>
-                </div>
-                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-xs transition-all shadow-[0_0_20px_rgba(109,85,250,0.4)] hover:shadow-[0_0_28px_rgba(109,85,250,0.65)] cursor-pointer">
-                  Request a Demo
-                </button>
-              </div>
-
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
-                isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
-              }`}>
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>02. Luminescent Aura</span>
-                    <span className="text-[9px] font-mono text-[#6D55FA] font-bold">Highlight</span>
-                  </div>
-                  <p className={`text-[11px] ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                    Vibrant halo glow for key highlighted CTA sections.
-                  </p>
-                </div>
-                <button className="w-full py-3 px-4 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] text-white font-semibold text-xs transition-all shadow-[0_0_30px_rgba(109,85,250,0.65)] hover:shadow-[0_0_40px_rgba(109,85,250,0.85)] cursor-pointer">
-                  Try Demo Mode →
-                </button>
-              </div>
-
-              <div className={`p-4 rounded-2xl border flex flex-col justify-between space-y-4 ${
-                isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
-              }`}>
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={`font-bold text-xs ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>03. Outline Pill</span>
-                    <span className="text-[9px] font-mono text-[#64748B] dark:text-[#94A3B8] font-bold">Secondary</span>
-                  </div>
-                  <p className={`text-[11px] ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                    Dark glass fill in dark mode; crisp translucent pill in light mode.
-                  </p>
-                </div>
-                <button className={`w-full py-3 px-4 rounded-full font-medium text-xs border transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:-translate-y-0.5 ${
-                  isDark 
-                    ? 'bg-[#181628] hover:bg-[#201D36] text-white border-[#2A2742] hover:border-[#6D55FA]/60' 
-                    : 'bg-white hover:bg-[#F5F3FF] text-[#0F0E17] border-[#E2E5EE] hover:border-[#6D55FA] hover:text-[#6D55FA]'
-                }`}>
-                  <Play className="w-3 h-3 fill-current text-[#6D55FA]" />
-                  <span>Watch Tour</span>
-                </button>
-              </div>
-
-            </div>
-          </div>
-
-          <div className={`lg:col-span-5 rounded-3xl p-6 sm:p-8 border flex flex-col justify-between ${
-            isDark ? 'bg-[#0F0E17] border-[#222033]' : 'bg-white border-[#E2E5EE]'
-          }`}>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className={`font-head font-bold text-lg ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
-                  Surface Architecture
-                </h3>
-                
-                <div className={`flex items-center p-1 rounded-lg border text-xs font-mono ${
-                  isDark ? 'bg-[#151422] border-[#222033]' : 'bg-[#F1F3F9] border-[#E2E5EE]'
-                }`}>
-                  <button
-                    onClick={() => setActiveSurfaceTab('dark')}
-                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
-                      activeSurfaceTab === 'dark' ? 'bg-[#6D55FA] text-white font-bold' : isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
-                    }`}
-                  >
-                    Dark Obsidian
-                  </button>
-                  <button
-                    onClick={() => setActiveSurfaceTab('light')}
-                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
-                      activeSurfaceTab === 'light' ? 'bg-[#6D55FA] text-white font-bold' : isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
-                    }`}
-                  >
-                    Light Mode
-                  </button>
-                </div>
-              </div>
-
-              <p className={`text-xs mb-4 ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
-                {activeSurfaceTab === 'dark' 
-                  ? 'Engineered obsidian black layers for high-depth optical isolation:'
-                  : 'Crisp modern off-white layers with purple atmospheric gradients:'}
-              </p>
-
-              <div className="space-y-2.5">
-                {(activeSurfaceTab === 'dark' ? OBSIDIAN_SHADES : LIGHT_SURFACE_SHADES).map((surface) => (
-                  <div 
-                    key={surface.hex}
-                    onClick={() => handleCopyHex(surface.hex)}
-                    className={`p-2.5 rounded-xl border transition-all duration-200 flex items-center justify-between cursor-pointer group hover:-translate-y-0.5 ${
-                      isDark 
-                        ? 'border-[#222033] bg-[#13121F] hover:border-[#6D55FA]/50' 
-                        : 'border-[#E2E5EE] bg-[#F8F9FC] hover:border-[#6D55FA]/50 hover:bg-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className={`w-7 h-7 rounded-lg border shrink-0 shadow-sm ${
-                          isDark ? 'border-[#222033]' : 'border-[#E2E5EE]'
-                        }`}
-                        style={{ backgroundColor: surface.hex }}
-                      />
-                      <div>
-                        <div className={`text-xs font-bold transition-colors ${
-                          isDark ? 'text-white group-hover:text-[#A78BFA]' : 'text-[#0F0E17] group-hover:text-[#6D55FA]'
-                        }`}>
-                          {surface.name}
-                        </div>
-                        <div className={`text-[10px] font-mono ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
-                          {surface.role}
-                        </div>
-                      </div>
-                    </div>
-                    <span className={`text-xs font-mono ${
-                      isDark ? 'text-[#94A3B8] group-hover:text-white' : 'text-[#64748B] group-hover:text-[#0F0E17]'
-                    }`}>
-                      {copiedHex === surface.hex ? 'Copied!' : surface.hex}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className={`pt-4 mt-4 border-t text-xs font-mono flex items-center justify-between ${
-              isDark ? 'border-[#222033] text-[#64748B]' : 'border-[#E2E5EE] text-[#64748B]'
-            }`}>
-              <span>WCAG Contrast: {activeSurfaceTab === 'dark' ? '14.8:1 (AAA)' : '15.6:1 (AAA)'}</span>
-              <span className="text-[#16A34A] dark:text-[#4ADE80]">✔ Verified</span>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
 
       {/* ──────────────────────────────────────────────────────────────────────────
           CORE CAPABILITIES GRID (Staggered Reveal)
@@ -1446,39 +1092,37 @@ export default function LandingPage() {
           ctaRevealed ? 'reveal-active' : ''
         }`}
       >
-        <div className={`relative rounded-3xl p-10 sm:p-14 overflow-hidden shadow-2xl border transition-all duration-300 ${
+        <div className={`relative rounded-3xl p-10 sm:p-14 overflow-hidden border shadow-lg transition-all duration-300 ${
           isDark 
-            ? 'bg-gradient-to-b from-[#151422] to-[#0A0912] border-[#2A2742]' 
-            : 'bg-gradient-to-b from-white to-[#F1F3F9] border-[#E2E5EE]'
+            ? 'bg-[#0F0E17] border-[#222033]' 
+            : 'bg-white border-[#E2E5EE]'
         }`}>
           
-          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#6D55FA]/30 rounded-full blur-3xl pointer-events-none" />
-
-          <h2 className={`font-editorial text-4xl sm:text-5xl font-normal tracking-tight mb-4 relative z-10 ${
+          <h2 className={`font-head text-3xl sm:text-4xl font-bold tracking-tight mb-3 relative z-10 ${
             isDark ? 'text-white' : 'text-[#0F0E17]'
           }`}>
-            Ready to explore your operational telemetry?
+            Inspect Operational Telemetry & Event Logs
           </h2>
           <p className={`text-sm sm:text-base max-w-xl mx-auto mb-8 relative z-10 ${
             isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
           }`}>
-            Try demo mode immediately with pre-loaded transactional data, or create a free account to ingest your own event logs.
+            Explore pre-loaded Order-to-Cash and IT Incident datasets in the interactive console, or create an account to configure your custom database connections.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 relative z-10">
             <Link
               to="/dashboard"
-              className="px-8 py-3.5 rounded-full bg-[#6D55FA] hover:bg-[#5B41E8] text-white font-semibold text-sm transition-all shadow-[0_0_35px_rgba(109,85,250,0.65)] hover:shadow-[0_0_45px_rgba(109,85,250,0.85)] hover:-translate-y-0.5 cursor-pointer"
+              className="px-7 py-3 rounded-xl bg-[#6D55FA] hover:bg-[#5B41E8] text-white font-semibold text-sm transition-all shadow-sm cursor-pointer"
             >
-              Try Demo Mode Now
+              Launch Telemetry Console
             </Link>
             
             <Link
               to="/signup"
-              className={`px-8 py-3.5 rounded-full font-medium text-sm transition-all cursor-pointer border hover:-translate-y-0.5 ${
+              className={`px-7 py-3 rounded-xl font-medium text-sm transition-all cursor-pointer border ${
                 isDark 
-                  ? 'bg-[#181628] hover:bg-[#201D36] text-white border-[#2A2742]' 
-                  : 'bg-white hover:bg-[#F5F3FF] text-[#0F0E17] border-[#E2E5EE] hover:border-[#6D55FA]'
+                  ? 'bg-[#151422] hover:bg-[#1E1C30] text-white border-[#2A2742]' 
+                  : 'bg-[#F1F3F9] hover:bg-white text-[#0F0E17] border-[#E2E5EE] shadow-2xs'
               }`}
             >
               Create Account
@@ -1493,29 +1137,24 @@ export default function LandingPage() {
       <footer className={`relative z-10 border-t py-10 transition-colors ${
         isDark ? 'border-[#222033] bg-[#0A0912]' : 'border-[#E2E5EE] bg-[#F1F3F9]'
       }`}>
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono ${
-          isDark ? 'text-[#64748B]' : 'text-[#64748B]'
-        }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 rounded-md overflow-hidden shrink-0 shadow-sm">
               <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
             </div>
-            <span className={`font-head font-bold text-sm ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
+            <span className={`font-head font-semibold text-[16px] tracking-tight ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
               OpsCopilot
             </span>
-            <span>© {new Date().getFullYear()} OpsCopilot Inc.</span>
+            <span className="text-[13px] font-normal text-[#64748B]">
+              © {new Date().getFullYear()} OpsCopilot Inc.
+            </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6">
-            <Link to="/dashboard" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#0F0E17]'}`}>Try Demo</Link>
-            <Link to="/login" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#0F0E17]'}`}>Login</Link>
-            <Link to="/signup" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#0F0E17]'}`}>Signup</Link>
-
-            <span className="flex items-center gap-1.5 text-[#16A34A] dark:text-[#4ADE80]">
-              <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
-              <span>All Systems Operational</span>
-            </span>
+          <div className="flex flex-wrap items-center gap-6 text-[13px] font-medium">
+            <Link to="/dashboard" className={`transition-colors ${isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'}`}>Try Demo</Link>
+            <Link to="/login" className={`transition-colors ${isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'}`}>Login</Link>
+            <Link to="/signup" className={`transition-colors ${isDark ? 'text-[#94A3B8] hover:text-white' : 'text-[#64748B] hover:text-[#0F0E17]'}`}>Signup</Link>
           </div>
 
         </div>
