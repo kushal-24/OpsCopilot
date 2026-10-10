@@ -45,6 +45,9 @@ backend/src/generated/prisma/
 .DS_Store
 
 # documents
+/PRD.md
+/Architecture.md
+/image.png
 Phases.md
 Rules.md
 

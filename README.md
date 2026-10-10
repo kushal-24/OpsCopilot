@@ -218,4 +218,4 @@ The backend's `npm test` is currently a placeholder that exits with an error; th
 
 Design trade-offs: **Quality** comes from database-backed tools and visible evidence; **Cost** is tracked through token-based estimates and reduced with summary caching; **Delivery** uses a single TypeScript API and PostgreSQL database, with RAG and ML extensions deferred.
 
-For the original product direction and build plan, see [PRD](PRD.md), [architecture notes](Architecture.md), [project phases](Phases.md), and [frontend phases](frontend/Phases.md). Those documents include proposed stack choices; the stack above describes the implementation in this repository.
+The stack and architecture above describe the implementation in this repository. Internal product and planning documents are maintained locally.
