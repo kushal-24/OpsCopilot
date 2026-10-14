@@ -1,13 +1,12 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../theme/theme'
-import { LayoutDashboard, Database, MessageSquare, Activity, ClipboardCheck, Settings, LogOut, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, Database, MessageSquare, ClipboardCheck, Settings, LogOut, Sun, Moon } from 'lucide-react'
 import { useAuth } from '../auth/auth.context'
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
   { to: '/data', label: 'Data', icon: <Database size={20} /> },
   { to: '/chat', label: 'Chat', icon: <MessageSquare size={20} /> },
-  { to: '/monitor', label: 'Monitoring', icon: <Activity size={20} /> },
   { to: '/evals', label: 'Evaluations', icon: <ClipboardCheck size={20} /> },
 ]
 

@@ -4,7 +4,7 @@ import apiResponse from "../utils/apiResponse.js";
 import * as evalService from "../services/eval.service";
 
 // datasetId is optional today (single-dataset demo), same convention as
-// analytics.controller.ts / monitoring.controller.ts.
+// analytics.controller.ts.
 function getDatasetId(req: Request): string | undefined {
   const datasetId = req.query.datasetId;
   return typeof datasetId === "string" ? datasetId : undefined;

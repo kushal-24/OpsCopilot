@@ -1073,7 +1073,7 @@ export default function LandingPage() {
                   Interactive Dashboards
                 </div>
                 <div className={`text-xs ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
-                  Grounded trust panels, process graph discovery, and monitoring.
+                  Grounded trust panels and process graph discovery.
                 </div>
               </div>
             </div>

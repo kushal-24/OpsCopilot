@@ -13,7 +13,6 @@ An event records a step in a case's journey—for example, a support ticket movi
 | Dashboard | Case counts, cycle-time metrics, activity performance, throughput, slowest cases, status/priority breakdowns, and a grounded AI summary |
 | Data management | CSV upload, bundled demo import, and current dataset details; the newest dataset owned by a user becomes their current dataset |
 | AI copilot | Persistent chat sessions, dataset-scoped analytics tools, and an expandable trust panel with tool arguments, results, and errors |
-| Monitoring | Request logs, latency, request volume, token usage, estimated cost, and success/error tracking |
 | Evaluations | Saved evaluation runs with expected answers, actual answers, pass/fail verdicts, judge reasoning, and aggregate accuracy |
 | Accounts and settings | Signup/login, JWT cookie authentication with refresh, profile/password updates, account deletion, and appearance settings |
 | Event explorer API | Filtered, paginated access to event-log records |
@@ -40,7 +39,7 @@ flowchart LR
     Tools --> Data
     Agent --> Evidence[Answers and tool traces]
     Evidence --> API
-    API --> Logs[Chat history and request monitoring]
+    API --> Logs[Chat history]
     Logs --> Prisma
     Eval[Evaluation runner and LLM judge] --> Agent
     Eval --> Prisma
@@ -148,7 +147,7 @@ Each row describes an event. Rows sharing `case_id` belong to one case; the firs
 
 Additional bundled datasets cover insurance claims, IT service desks, loan applications, and e-commerce refunds. These four datasets are **synthetic**, with fictional organizations and people. See [dataset descriptions and schema](backend/data/DATASETS_README.md) for sizes, periods, and process characteristics.
 
-## Evaluations and monitoring
+## Evaluations
 
 The evaluation runner asks the agent the fixed questions in `backend/src/config/evalQuestions.ts`, grades answers with an LLM judge, and stores historical results in `EvalRun` and `EvalResult`.
 
@@ -160,7 +159,7 @@ npx tsx src/services/eval.service.ts
 
 **Before running:** the runner uses `SEEDED_DATASET_ID` in `backend/src/config/constants.ts`. That dataset must exist and contain the data expected by the evaluation questions. A fresh account's demo import creates a different ID; importing it alone does not configure the evaluation runner. Review the ID and expected answers before evaluating another dataset. Runs make real Gemini requests and may encounter provider quotas.
 
-Chat request monitoring records latency, input/output tokens, tool traces, estimated cost, and errors. Cost uses constants in `backend/src/config/constants.ts`, so it is an estimate rather than a billing total. Dashboard insights are cached for 15 minutes to reduce repeated model calls.
+Chat request logging records latency, input/output tokens, tool traces, estimated cost, and errors. Cost uses constants in `backend/src/config/constants.ts`, so it is an estimate rather than a billing total. Dashboard insights are cached for 15 minutes to reduce repeated model calls.
 
 ## API overview
 
@@ -172,11 +171,10 @@ All routes are under `/api/v1`.
 | `/datasets` | `POST /upload`, `POST /demo`, `GET /me` |
 | `/analytics` | `GET /dashboard`, `/summary`, `/activity-performance`, `/throughput`, `/slowest-cases`, `/insight` |
 | `/chat` | `POST /sessions`, `GET /sessions`, `GET` or `POST /sessions/:sessionId/messages` |
-| `/monitoring` | `GET /overview`, `/summary`, `/latency-over-time`, `/request-volume-over-time`, `/requests` |
 | `/eval` | `GET /latest`, `/runs`, `/runs/:runId` |
 | `/events` | `GET /` for event exploration |
 
-Dataset and chat routes require authentication. Analytics, monitoring, evaluations, and event exploration currently have no route-level JWT middleware; review access control before exposing this development application publicly.
+Dataset and chat routes require authentication. Analytics, evaluations, and event exploration currently have no route-level JWT middleware; review access control before exposing this development application publicly.
 
 ## Repository guide
 
@@ -187,13 +185,13 @@ backend/
   src/
     controllers/ HTTP request handlers
     routes/      API route definitions
-    services/    Auth, imports, analytics, chat, monitoring, evaluations
+    services/    Auth, imports, analytics, chat, evaluations
     tools/       Analytics function declarations and execution
     lib/         Prisma and Gemini clients
     config/      Evaluation questions and shared constants
 frontend/
   src/
-    pages/       Landing, auth, dashboard, data, chat, monitor, evals, settings
+    pages/       Landing, auth, dashboard, data, chat, evals, settings
     components/  Shared layout and page sections
     api/         Axios client and domain API modules
     auth/        Authentication context
@@ -203,7 +201,7 @@ docker-compose.yml
 
 ## Status and development checks
 
-The repository contains the dashboard, dataset import, copilot, monitoring, evaluations, and settings implementations. SOP/document retrieval is a placeholder at `/document`; RAG/vector search and Python-based ML/anomaly detection remain deferred. Chat returns completed responses rather than a streaming response. Event exploration currently has a backend API rather than a dedicated frontend route.
+The repository contains the dashboard, dataset import, copilot, evaluations, and settings implementations. SOP/document retrieval is a placeholder at `/document`; RAG/vector search and Python-based ML/anomaly detection remain deferred. Chat returns completed responses rather than a streaming response. Event exploration currently has a backend API rather than a dedicated frontend route.
 
 The phase documents are planning checklists, not verified release status. Public demo views and offline evaluations may need seeded database records; this repository does not currently provide a complete one-command seed/reset flow.
 
