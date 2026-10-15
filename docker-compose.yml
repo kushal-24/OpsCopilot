@@ -6,6 +6,11 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+    environment:
+      # Inside the compose network, containers reach each other by service name.
+      CHROMA_URL: http://chroma:8000
+    depends_on:
+      - chroma
 
   frontend:
     build: ./frontend
@@ -28,5 +33,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     
+  chroma:
+    image: chromadb/chroma
+    container_name: opscopilot-chroma
+    restart: always
+    ports:
+      # host:container - lets you hit Chroma from your Mac at localhost:8000
+      - "8000:8000"
+    volumes:
+      # Persist vectors across restarts (Chroma stores data in /data)
+      - chroma_data:/data
+
 volumes:
   postgres_data:
+  chroma_data:

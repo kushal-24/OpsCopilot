@@ -1,9 +1,15 @@
+import "dotenv/config";
 import {
   GoogleGenAI,
   FunctionCallingConfigMode,
   createPartFromFunctionResponse,
 } from "@google/genai";
 import { analyticsTools, ToolContext } from "../tools/analyticsTools";
+import {
+  EMBEDDING_BATCH_SIZE,
+  EMBEDDING_DIMENSIONS,
+  EMBEDDING_MODEL,
+} from "../config/constants";
 
 const MODEL = "gemini-3.6-flash";
 const MAX_TOOL_ROUNDS = 5;
@@ -94,9 +100,14 @@ export async function runAgentTurn(
     const functionCalls = response.functionCalls;
 
     if (!functionCalls || functionCalls.length === 0) {
-      return { text: response.text ?? "", toolCalls, inputTokens, outputTokens };
+      return {
+        text: response.text ?? "",
+        toolCalls,
+        inputTokens,
+        outputTokens,
+      };
     }
-    
+
     /*
     functionCalls = [
       {
@@ -157,7 +168,12 @@ export async function runAgentTurn(
   });
   trackUsage(finalResponse);
 
-  return { text: finalResponse.text ?? "", toolCalls, inputTokens, outputTokens };
+  return {
+    text: finalResponse.text ?? "",
+    toolCalls,
+    inputTokens,
+    outputTokens,
+  };
 }
 
 const JUDGE_INSTRUCTION = `You are grading an AI assistant's answer to a question about operational
@@ -199,7 +215,9 @@ export async function judgeAnswer(
 
   try {
     const text = (response.text ?? "").trim();
-    const jsonText = text.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
+    const jsonText = text
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/```\s*$/i, "");
     const parsed = JSON.parse(jsonText);
 
     return {
@@ -232,7 +250,11 @@ export type DashboardFacts = {
   medianCycleTimeHours: number;
   bottleneckActivity: string | null;
   bottleneckAvgDurationHours: number | null;
-  activityPerformance: { activity: string; avgDurationHours: number; occurrences: number }[];
+  activityPerformance: {
+    activity: string;
+    avgDurationHours: number;
+    occurrences: number;
+  }[];
 };
 
 /**
@@ -240,7 +262,9 @@ export type DashboardFacts = {
  * same client/model as the chat agent and judge above, as a single
  * non-chat call grounded strictly in the pre-computed facts passed in.
  */
-export async function generateDashboardInsight(facts: DashboardFacts): Promise<string> {
+export async function generateDashboardInsight(
+  facts: DashboardFacts,
+): Promise<string> {
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: `Dashboard data:\n${JSON.stringify(facts, null, 2)}`,
@@ -248,4 +272,87 @@ export async function generateDashboardInsight(facts: DashboardFacts): Promise<s
   });
 
   return (response.text ?? "").trim();
+}
+
+// ---------------------------------------------------------------------------
+// Embeddings (RAG)
+// ---------------------------------------------------------------------------
+
+// Gemini optimizes the vector depending on what the text is for:
+//  - "document": an SOP chunk we are storing
+//  - "query":    a question we are searching with
+// Using the matching type on each side improves retrieval quality.
+export type EmbedKind = "document" | "query";
+
+const TASK_TYPE: Record<EmbedKind, string> = {
+  document: "RETRIEVAL_DOCUMENT",
+  query: "RETRIEVAL_QUERY",
+};
+
+// Shorter-than-native vectors come back un-normalized (length != 1). Scaling
+// each to length 1 makes distances comparable and meaningful in Chroma.
+function normalize(vector: number[]): number[] {
+  const norm = Math.sqrt(vector.reduce((sum, x) => sum + x * x, 0));
+  return norm === 0 ? vector : vector.map((x) => x / norm);
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Free-tier quotas (429) and brief overloads (503) are normal - back off and retry.
+async function withRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const status = (err as { status?: number }).status;
+      const retryable = status === 429 || status === 503;
+      if (!retryable || attempt >= attempts) throw err;
+      await sleep(1000 * 2 ** (attempt - 1)); // 1s, 2s, 4s
+    }
+  }
+}
+
+/**
+ * Turn many texts into vectors, in the same order. Splits into batches of
+ * EMBEDDING_BATCH_SIZE because the API caps texts per request.
+ */
+export async function embedBatch(
+  texts: string[],
+  kind: EmbedKind = "document",
+): Promise<number[][]> {
+  const vectors: number[][] = [];
+
+  for (let i = 0; i < texts.length; i += EMBEDDING_BATCH_SIZE) {
+    const batch = texts.slice(i, i + EMBEDDING_BATCH_SIZE);
+    const response = await withRetry(() =>
+      ai.models.embedContent({
+        model: EMBEDDING_MODEL,
+        contents: batch,
+        config: {
+          taskType: TASK_TYPE[kind],
+          outputDimensionality: EMBEDDING_DIMENSIONS,
+        },
+      }),
+    );
+
+    for (const embedding of response.embeddings ?? []) {
+      vectors.push(normalize(embedding.values ?? []));
+    }
+  }
+
+  if (vectors.length !== texts.length) {
+    throw new Error(
+      `Embedding count mismatch: sent ${texts.length}, got ${vectors.length}`,
+    );
+  }
+  return vectors;
+}
+
+/** One text -> one vector. Used for the user's question at search time. */
+export async function embedText(
+  text: string,
+  kind: EmbedKind = "query",
+): Promise<number[]> {
+  const [vector] = await embedBatch([text], kind);
+  return vector!;
 }

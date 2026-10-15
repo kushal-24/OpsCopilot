@@ -12,3 +12,13 @@ export const GEMINI_OUTPUT_COST_PER_MILLION_TOKENS = 7.5;
 // How long a generated dashboard insight is reused before asking the LLM
 // again — avoids burning the Gemini quota on every dashboard view.
 export const DASHBOARD_INSIGHT_CACHE_TTL_MS = 15 * 60 * 1000;
+
+// RAG embeddings. The SAME model must embed both the SOP chunks and the user's
+// questions - vectors from different models live in different "spaces" and
+// can't be compared. If you ever change these, re-ingest every document.
+export const EMBEDDING_MODEL = "gemini-embedding-001";
+// gemini-embedding-001 natively outputs 3072 numbers; 768 is plenty for short
+// SOP text and makes storage/search ~4x lighter.
+export const EMBEDDING_DIMENSIONS = 768;
+// The embedding API accepts up to 100 texts per request.
+export const EMBEDDING_BATCH_SIZE = 100;
