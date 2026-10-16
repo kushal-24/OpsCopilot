@@ -8,6 +8,7 @@ import chatRouter from "./routes/chat.routes"
 import evalRouter from "./routes/eval.routes"
 import datasetRouter from "./routes/dataset.routes"
 import explorerRouter from "./routes/explorer.routes"
+import documentRouter from "./routes/document.routes"
 import apiError from "./utils/apiError.js"
 
 
@@ -33,6 +34,7 @@ app.use("/api/v1/analytics", analyticsRouter);
 app.use("/api/v1/eval", evalRouter);
 app.use("/api/v1/datasets", datasetRouter);
 app.use("/api/v1/events", explorerRouter);
+app.use("/api/v1/documents", documentRouter);
 
 // Central error handler: catches whatever asyncHandler forwards via next(err)
 // so a thrown apiError (or anything else) becomes a JSON response instead of

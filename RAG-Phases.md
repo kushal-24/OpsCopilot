@@ -79,13 +79,13 @@ QUERY (every chat question)
 
 **Learn:** how the Postgres row and the Chroma chunks are tied together.
 
-- [ ] Extend the `Document` model (additive migration only): `status` (processing / ready / failed), `chunkCount`. Existing models stay untouched.
-- [ ] `services/document.service.ts`: save the file, extract text, chunk, embed, upsert into Chroma
-- [ ] Use stable chunk IDs (`documentId:index`) and store `documentId` and `datasetId` as metadata
-- [ ] Endpoints in `routes/document.routes.ts` (auth required): `POST /documents` (upload), `GET /documents` (list), `DELETE /documents/:id`
-- [ ] Delete removes the Postgres row **and** the Chroma chunks (filter by `documentId`)
-- [ ] Deleting a dataset or user must also clean their chunks from Chroma
-- [ ] Seed script: ingest the bundled SOPs for the demo datasets
+- [x] Extend the `Document` model (additive migration only): `status` (processing / ready / failed), `chunkCount`. Existing models stay untouched.
+- [x] `services/document.service.ts`: save the file, extract text, chunk, embed, upsert into Chroma
+- [x] Use stable chunk IDs (`documentId:index`) and store `documentId` and `datasetId` as metadata
+- [x] Endpoints in `routes/document.routes.ts` (auth required): `POST /documents` (upload), `GET /documents` (list), `DELETE /documents/:id`
+- [x] Delete removes the Postgres row **and** the Chroma chunks (filter by `documentId`)
+- [x] Deleting a dataset or user must also clean their chunks from Chroma
+- [x] Seed script: ingest the bundled SOPs for the demo datasets
 
 **Done when:** uploading a file creates a row and chunks, and deleting it removes both.
 

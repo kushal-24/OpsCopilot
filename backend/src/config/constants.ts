@@ -22,3 +22,7 @@ export const EMBEDDING_MODEL = "gemini-embedding-001";
 export const EMBEDDING_DIMENSIONS = 768;
 // The embedding API accepts up to 100 texts per request.
 export const EMBEDDING_BATCH_SIZE = 100;
+
+// One Chroma collection holds every SOP chunk. Which chunks a user can see is
+// decided by the `datasetId` metadata filter, not by separate collections.
+export const SOP_COLLECTION = "sop_chunks";

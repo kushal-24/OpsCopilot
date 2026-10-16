@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
 import apiError from "../utils/apiError.js";
+import { deleteChunks } from "./document.service";
 import {
   hashPassword,
   isPasswordCorrect,
@@ -159,6 +160,19 @@ export async function changePassword(
 }
 
 export async function deleteAccount(userId: string) {
+  // Postgres cascades to datasets, documents, chatSessions, aiRequests - but
+  // cannot reach Chroma. Clear this user's SOP chunks first. Best-effort: a
+  // Chroma outage must not block someone from deleting their account.
+  const datasets = await prisma.dataset.findMany({
+    where: { userId },
+    select: { id: true },
+  });
+  for (const { id } of datasets) {
+    await deleteChunks({ datasetId: id }).catch((err) =>
+      console.error(`Could not delete SOP chunks for dataset ${id}:`, err),
+    );
+  }
+
   // Cascades to datasets, chatSessions, aiRequests per schema.prisma relations.
   await prisma.user.delete({ where: { id: userId } });
 }

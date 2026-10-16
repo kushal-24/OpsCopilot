@@ -119,6 +119,11 @@ model Document {
   fileName   String
   fileType   String
   uploadedAt DateTime @default(now())
+  // RAG ingestion state: "processing" -> "ready" | "failed".
+  // Defaults keep any pre-existing Document rows valid.
+  status     String   @default("ready")
+  chunkCount Int      @default(0)
+  error      String?
 }
 
 model EvalRun {
