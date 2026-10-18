@@ -10,33 +10,7 @@ import DataPage from './pages/DataPage'
 import ChatPage from './pages/ChatPage'
 import EvalsPage from './pages/EvalsPage'
 import SettingsPage from './pages/SettingsPage'
-
-import { Activity } from 'lucide-react'
-
-// Enhanced Stub component incorporating basic landing page animations & micro-interactions
-const Stub = ({ label }) => (
-  <div className="max-w-4xl mx-auto py-12 px-4">
-    <div className="rounded-3xl p-8 bg-surface border border-border shadow-xl relative overflow-hidden transition-all duration-300">
-      <div className="absolute -top-16 -right-16 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none animate-pulse-glow" />
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center font-bold text-lg animate-scale-in overflow-hidden">
-          <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover rounded-2xl" />
-        </div>
-        <div>
-          <h2 className="font-head text-2xl font-bold text-text tracking-tight flex items-center gap-2">
-            {label}
-          </h2>
-          <p className="text-xs font-mono text-muted mt-0.5">Telemetry & Mining Module</p>
-        </div>
-      </div>
-      <div className="p-4 rounded-2xl bg-surface-2/60 border border-border/60 flex items-center gap-3 text-xs font-mono text-muted mt-6">
-        <Activity className="w-4 h-4 text-primary animate-pulse" />
-        <span>Module interface active. Grounded Process Mining pipeline initialized.</span>
-      </div>
-    </div>
-  </div>
-)
-
+import DocumentsPage from './pages/DocumentsPage'
 
 function App() {
   return (
@@ -61,7 +35,7 @@ function App() {
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/evals" element={<EvalsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/document" element={<Stub label="SOPs — Phase 10 (stub)" />} />
+            <Route path="/document" element={<DocumentsPage />} />
           </Route>
         </Route>
       </Routes>

@@ -39,14 +39,24 @@ app.use("/api/v1/documents", documentRouter);
 // Central error handler: catches whatever asyncHandler forwards via next(err)
 // so a thrown apiError (or anything else) becomes a JSON response instead of
 // hanging/crashing the request.
+// Error.message is a non-enumerable property, so JSON-serializing the error
+// object directly drops it. Build the body explicitly so clients get `message`.
+const errorBody = (error: apiError) => ({
+    statusCode: error.statusCode,
+    data: null,
+    message: error.message,
+    success: false,
+    errors: error.errors,
+})
+
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof apiError) {
-        res.status(err.statusCode).json(err);
+        res.status(err.statusCode).json(errorBody(err));
         return;
     }
 
     console.error(err);
-    res.status(500).json(new apiError(500, "Internal server error"));
+    res.status(500).json(errorBody(new apiError(500, "Internal server error")));
 })
 
 export {app}

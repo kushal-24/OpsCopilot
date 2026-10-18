@@ -122,10 +122,10 @@ QUERY (every chat question)
 
 **Learn:** how the UI surfaces retrieval, so the trust panel makes RAG visible.
 
-- [ ] Documents UI at the existing `/document` placeholder: upload zone, list with status, delete (reuse the Data page components' style)
-- [ ] `api/documents.api.js` plus TanStack Query hooks
-- [ ] Trust panel: render `search_docs` results as source name + passage excerpt (in addition to SQL and metrics)
-- [ ] Add the nav item and empty/loading/error states
+- [x] Documents UI at the existing `/document` placeholder: upload zone, list with status, delete (reuse the Data page components' style)
+- [x] `api/documents.api.js` plus TanStack Query hooks
+- [x] Trust panel: render `search_docs` results as source name + passage excerpt (in addition to SQL and metrics)
+- [x] Add the nav item and empty/loading/error states
 
 **Done when:** you can upload an SOP in the browser, ask about it in chat, and expand the panel to see the passages used.
 

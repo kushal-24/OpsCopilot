@@ -65,7 +65,7 @@ export default function ChatMessageItem({ message }) {
             >
               <div className="flex items-center gap-1.5">
                 <Wrench size={13} className="animate-pulse" />
-                <span>⚡ Grounded Tool Reasoning ({toolCalls.length} DB query executed)</span>
+                <span>⚡ Grounded Tool Reasoning ({toolCalls.length} {toolCalls.length === 1 ? 'tool call' : 'tool calls'} executed)</span>
               </div>
               {showTrustPanel ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
@@ -97,7 +97,30 @@ export default function ChatMessageItem({ message }) {
                       </div>
                     )}
 
-                    {tc.result && (
+                    {tc.tool === 'search_docs' && tc.result && (
+                      <div className="space-y-1.5">
+                        <span className="text-muted block text-[10px]">Retrieved SOP Passages:</span>
+                        {tc.result.matches?.length > 0 ? (
+                          tc.result.matches.map((m, i) => (
+                            <div key={i} className="p-1.5 rounded bg-surface-2 space-y-0.5">
+                              <div className="flex items-center justify-between gap-2 text-[10px]">
+                                <span className="font-semibold text-text truncate">
+                                  {m.source} · {m.section}
+                                </span>
+                                <span className="text-muted shrink-0">distance {m.distance}</span>
+                              </div>
+                              <p className="text-muted text-[10px] leading-tight whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                                {m.text}
+                              </p>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-muted text-[10px]">{tc.result.note || 'No relevant passages found.'}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {tc.tool !== 'search_docs' && tc.result && (
                       <div>
                         <span className="text-muted block text-[10px]">Database Output Snippet:</span>
                         <pre className="text-muted bg-surface-2 p-1.5 rounded max-h-24 overflow-y-auto text-[10px] leading-tight">
