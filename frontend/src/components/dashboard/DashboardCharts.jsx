@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { TrendingUp, Layers } from 'lucide-react'
 
 /**
  * DashboardCharts — Custom responsive SVG visualizations for process throughput timeline and activity bottleneck ranking.
@@ -10,11 +9,11 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in-up">
-        <div className="rounded-card border border-border bg-surface p-6 shadow-card animate-pulse h-80 flex flex-col justify-between">
+        <div className="rounded-card border border-border bg-surface p-6 animate-pulse h-80 flex flex-col justify-between">
           <div className="h-5 bg-surface-2 rounded w-1/3" />
           <div className="h-48 bg-surface-2/60 rounded" />
         </div>
-        <div className="rounded-card border border-border bg-surface p-6 shadow-card animate-pulse h-80 flex flex-col justify-between">
+        <div className="rounded-card border border-border bg-surface p-6 animate-pulse h-80 flex flex-col justify-between">
           <div className="h-5 bg-surface-2 rounded w-1/3" />
           <div className="h-48 bg-surface-2/60 rounded" />
         </div>
@@ -23,7 +22,6 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
   }
 
   // Calculate scales for Throughput SVG Chart
-  const dates = throughput.map((d) => d.date)
   const startedVals = throughput.map((d) => d.startedCases)
   const completedVals = throughput.map((d) => d.completedCases)
   const maxVal = Math.max(...startedVals, ...completedVals, 5)
@@ -49,18 +47,13 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in-up">
       {/* 1. Throughput Timeline Chart */}
-      <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card hover:border-border/80 transition-all">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-              <TrendingUp size={18} />
-            </div>
-            <div>
-              <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
-                Case Throughput
-              </h3>
-              <p className="text-[11px] sm:text-xs text-muted">Daily started vs. completed cases</p>
-            </div>
+      <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 ">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5">
+          <div>
+            <h3 className="font-head text-base font-semibold text-text tracking-tight">
+              Case throughput
+            </h3>
+            <p className="text-xs text-muted mt-0.5">Daily started vs. completed cases</p>
           </div>
 
           <div className="flex items-center gap-3 text-[11px] sm:text-xs font-medium self-start sm:self-auto">
@@ -76,7 +69,7 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
         </div>
 
         {throughput.length === 0 ? (
-          <div className="h-52 flex items-center justify-center text-xs text-muted font-mono">
+          <div className="h-52 flex items-center justify-center text-xs text-muted">
             No throughput telemetry records found.
           </div>
         ) : (
@@ -199,7 +192,7 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
 
             {/* Hover Tooltip display */}
             {hoveredPoint !== null && throughput[hoveredPoint] && (
-              <div className="absolute top-2 right-2 p-2 rounded-card bg-surface/95 border border-border shadow-lg text-xs font-mono space-y-1 backdrop-blur-md">
+              <div className="absolute top-2 right-2 p-2 rounded-card bg-surface border border-border shadow-sm text-xs font-mono space-y-1">
                 <div className="font-semibold text-text">{throughput[hoveredPoint].date}</div>
                 <div className="text-primary flex justify-between gap-3">
                   <span>Started:</span>
@@ -216,23 +209,16 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
       </div>
 
       {/* 2. Activity Bottleneck Bar Chart */}
-      <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card hover:border-border/80 transition-all">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-warning/10 text-warning shrink-0">
-              <Layers size={18} />
-            </div>
-            <div>
-              <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
-                Activity Duration Rankings
-              </h3>
-              <p className="text-[11px] sm:text-xs text-muted">Average wait time per process phase (hours)</p>
-            </div>
-          </div>
+      <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 ">
+        <div className="mb-5">
+          <h3 className="font-head text-base font-semibold text-text tracking-tight">
+            Time spent per step
+          </h3>
+          <p className="text-xs text-muted mt-0.5">Average wait per process step (hours), slowest first</p>
         </div>
 
         {activityPerformance.length === 0 ? (
-          <div className="h-52 flex items-center justify-center text-xs text-muted font-mono">
+          <div className="h-52 flex items-center justify-center text-xs text-muted">
             No activity metrics available.
           </div>
         ) : (
@@ -259,7 +245,7 @@ export default function DashboardCharts({ throughput = [], activityPerformance =
                     <div
                       className={`h-full rounded-pill transition-all duration-500 ${
                         isTopBottleneck
-                          ? 'bg-gradient-to-r from-amber-500 to-red-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]'
+                          ? 'bg-warning'
                           : 'bg-primary/80'
                       }`}
                       style={{ width: `${Math.max(pct, 4)}%` }}

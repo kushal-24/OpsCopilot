@@ -114,7 +114,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] bg-bg text-text rounded-card border border-border overflow-hidden shadow-card animate-fade-in-up">
+    <div className="flex h-[calc(100vh-4rem)] bg-bg text-text rounded-card border border-border overflow-hidden animate-fade-in-up">
       {/* Sessions Sidebar */}
       <ChatHistorySidebar
         sessions={sessions}
@@ -133,7 +133,7 @@ export default function ChatPage() {
       {/* Main Chat Thread Section */}
       <div className="flex-1 flex flex-col min-w-0 bg-bg/60 relative">
         {/* Header Bar */}
-        <header className="h-12 border-b border-border bg-surface/80 backdrop-blur-md px-4 flex items-center justify-between shrink-0">
+        <header className="h-12 border-b border-border bg-surface px-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsOpenMobile(true)}
@@ -149,9 +149,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-pill bg-primary/10 text-primary border border-primary/20">
-            Gemini 3.6 Tool Engine
-          </span>
+          <span className="text-xs text-muted">Gemini 3.6</span>
         </header>
 
         {/* Error Notice */}

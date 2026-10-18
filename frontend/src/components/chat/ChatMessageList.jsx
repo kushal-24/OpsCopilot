@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import ChatMessageItem from './ChatMessageItem'
-import { Sparkles, MessageSquare, ArrowRight } from 'lucide-react'
+import { Sparkles, ArrowRight } from 'lucide-react'
 
 const SUGGESTED_PROMPTS = [
   {
@@ -50,9 +50,7 @@ export default function ChatMessageList({ messages = [], isSending, onSelectProm
   if (messages.length === 0) {
     return (
       <div className="flex-1 p-4 sm:p-8 overflow-y-auto flex flex-col items-center justify-center text-center max-w-3xl mx-auto w-full animate-fade-in-up">
-        <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(109,85,250,0.3)]">
-          <Sparkles size={28} />
-        </div>
+        <Sparkles size={28} className="text-muted mb-4" />
 
         <h3 className="font-head text-lg sm:text-xl font-bold text-text tracking-tight mb-2">
           OpsCopilot Telemetry Assistant
@@ -67,7 +65,7 @@ export default function ChatMessageList({ messages = [], isSending, onSelectProm
             <button
               key={idx}
               onClick={() => onSelectPrompt(item.prompt)}
-              className="p-3.5 rounded-card bg-surface border border-border hover:border-primary/50 hover:bg-surface-2/60 transition-all text-xs group cursor-pointer flex flex-col justify-between gap-2 shadow-card"
+              className="p-3.5 rounded-card bg-surface border border-border hover:border-primary/50 hover:bg-surface-2/60 transition-all text-xs group cursor-pointer flex flex-col justify-between gap-2"
             >
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-text font-head">{item.title}</span>
@@ -90,8 +88,8 @@ export default function ChatMessageList({ messages = [], isSending, onSelectProm
       {/* Thinking / Tool Calling Indicator */}
       {isSending && (
         <div className="flex gap-3 max-w-4xl mx-auto my-3 animate-fade-in-up">
-          <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-[0_0_12px_rgba(109,85,250,0.4)]">
-            <Sparkles size={16} className="animate-pulse" />
+          <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">
+            <Sparkles size={16} />
           </div>
           <div className="p-3.5 rounded-2xl rounded-tl-none bg-surface border border-border text-xs text-muted flex items-center gap-2">
             <div className="flex gap-1">

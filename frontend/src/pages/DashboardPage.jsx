@@ -6,7 +6,7 @@ import DashboardInsight from '../components/dashboard/DashboardInsight'
 import DashboardKpis from '../components/dashboard/DashboardKpis'
 import DashboardCharts from '../components/dashboard/DashboardCharts'
 import DashboardTables from '../components/dashboard/DashboardTables'
-import { RefreshCw, PlayCircle, ShieldCheck, AlertCircle } from 'lucide-react'
+import { RefreshCw, AlertCircle } from 'lucide-react'
 
 /**
  * DashboardPage — Main Phase 4 OpsCopilot Dashboard.
@@ -63,7 +63,6 @@ export default function DashboardPage() {
       {isDemo && (
         <div className="rounded-card border border-warning/30 bg-warning/10 p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-text transition-all">
           <div className="flex items-center gap-2.5">
-            <PlayCircle size={18} className="text-warning animate-pulse" />
             <div>
               <span className="font-semibold text-warning">Demo Mode Active:</span>
               <span className="ml-1 text-muted">
@@ -74,7 +73,7 @@ export default function DashboardPage() {
           {isAuthenticated && (
             <button
               onClick={toggleDemo}
-              className="self-start sm:self-auto px-3 py-1 rounded-pill bg-surface border border-border text-xs font-medium hover:bg-surface-2 transition-all cursor-pointer"
+              className="self-start sm:self-auto px-3 py-1 rounded-card bg-surface border border-border text-xs font-medium hover:bg-surface-2 transition-all cursor-pointer"
             >
               Switch to Live Workspace
             </button>
@@ -85,22 +84,11 @@ export default function DashboardPage() {
       {/* Header & Main Page Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-5">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="font-head text-2xl sm:text-3xl font-bold text-text tracking-tight">
-              Operations Dashboard
-            </h1>
-            {isDemo ? (
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-pill bg-warning/20 text-warning border border-warning/30 font-medium">
-                Demo Environment
-              </span>
-            ) : (
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-pill bg-success/15 text-success border border-success/30 font-medium flex items-center gap-1">
-                <ShieldCheck size={12} /> Live Telemetry
-              </span>
-            )}
-          </div>
+          <h1 className="font-head text-2xl sm:text-3xl font-semibold text-text tracking-tight">
+            Operations Dashboard
+          </h1>
           <p className="text-xs sm:text-sm text-muted mt-1">
-            Real-time process mining, cycle-time telemetry, and Gemini AI bottleneck synthesis
+            {isDemo ? 'Demo data' : 'Your active dataset'} · cycle times, bottlenecks and throughput from your event log
           </p>
         </div>
 
@@ -108,7 +96,7 @@ export default function DashboardPage() {
           <button
             onClick={handleRefreshAll}
             disabled={isDashboardLoading || isDashboardRefetching}
-            className="px-3.5 py-2 rounded-card bg-surface border border-border text-xs font-medium text-text hover:bg-surface-2 flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:opacity-50"
+            className="px-3.5 py-2 rounded-card bg-surface border border-border text-xs font-medium text-text hover:bg-surface-2 flex items-center gap-2 transition-all duration-200 cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={14} className={isDashboardRefetching ? 'animate-spin text-primary' : ''} />
             <span>{isDashboardRefetching ? 'Refreshing...' : 'Refresh Data'}</span>
@@ -125,7 +113,7 @@ export default function DashboardPage() {
           </div>
           <button
             onClick={handleRefreshAll}
-            className="px-3 py-1 rounded-pill bg-surface text-danger border border-danger/40 hover:bg-danger/10 font-medium cursor-pointer"
+            className="px-3 py-1 rounded-card bg-surface text-danger border border-danger/40 hover:bg-danger/10 font-medium cursor-pointer"
           >
             Retry Connection
           </button>

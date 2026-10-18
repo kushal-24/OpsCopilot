@@ -1,5 +1,3 @@
-import { AlertCircle, ArrowUpRight, BarChart2 } from 'lucide-react'
-
 /**
  * DashboardTables — Renders the slowest cases table alongside case status & priority breakdown distributions.
  */
@@ -7,7 +5,7 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up">
-        <div className="lg:col-span-2 rounded-card border border-border bg-surface p-6 shadow-card animate-pulse space-y-4">
+        <div className="lg:col-span-2 rounded-card border border-border bg-surface p-6 animate-pulse space-y-4">
           <div className="h-5 bg-surface-2 rounded w-1/4" />
           <div className="space-y-2">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -15,7 +13,7 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
             ))}
           </div>
         </div>
-        <div className="rounded-card border border-border bg-surface p-6 shadow-card animate-pulse space-y-4">
+        <div className="rounded-card border border-border bg-surface p-6 animate-pulse space-y-4">
           <div className="h-5 bg-surface-2 rounded w-1/3" />
           <div className="h-40 bg-surface-2/60 rounded" />
         </div>
@@ -26,13 +24,13 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
   const getPriorityStyle = (priority) => {
     switch (priority?.toLowerCase()) {
       case 'critical':
-        return 'bg-danger/10 text-danger border-danger/30'
+        return 'text-danger'
       case 'high':
-        return 'bg-warning/10 text-warning border-warning/30'
+        return 'text-warning'
       case 'medium':
-        return 'bg-primary/10 text-primary border-primary/30'
+        return 'text-primary'
       default:
-        return 'bg-surface-2 text-muted border-border'
+        return 'text-muted'
     }
   }
 
@@ -53,33 +51,26 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up">
       {/* 1. Slowest Cases Table (Spans 2 columns on wide screens) */}
-      <div className="lg:col-span-2 rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-danger/10 text-danger">
-              <AlertCircle size={18} />
-            </div>
-            <div>
-              <h3 className="font-head text-base font-semibold text-text tracking-tight">
-                Slowest Active Cases
-              </h3>
-              <p className="text-xs text-muted">Cases experiencing highest total latency</p>
-            </div>
+      <div className="lg:col-span-2 rounded-card border border-border bg-surface p-3.5 sm:p-6">
+        <div className="flex items-start justify-between gap-3 mb-5">
+          <div>
+            <h3 className="font-head text-base font-semibold text-text tracking-tight">
+              Slowest cases
+            </h3>
+            <p className="text-xs text-muted mt-0.5">Cases with the longest total duration, open or closed</p>
           </div>
-          <span className="text-xs font-mono px-2.5 py-1 rounded-pill bg-surface-2 border border-border/60 text-muted">
-            Top {slowestCases.length} Delayed
-          </span>
+          <span className="text-xs text-muted shrink-0">Top {slowestCases.length}</span>
         </div>
 
         {slowestCases.length === 0 ? (
-          <div className="h-48 flex items-center justify-center text-xs text-muted font-mono">
+          <div className="h-48 flex items-center justify-center text-xs text-muted">
             No long-running cases detected.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-border/60 text-muted font-mono uppercase text-[10px]">
+                <tr className="border-b border-border/60 text-muted text-xs font-semibold">
                   <th className="py-2.5 px-3">Case ID</th>
                   <th className="py-2.5 px-3">Priority</th>
                   <th className="py-2.5 px-3">Channel / Tier</th>
@@ -91,14 +82,9 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
               <tbody className="divide-y divide-border/40">
                 {slowestCases.map((c) => (
                   <tr key={c.caseId} className="hover:bg-surface-2/50 transition-colors">
-                    <td className="py-3 px-3 font-mono font-semibold text-text flex items-center gap-1.5">
-                      <span>{c.caseId}</span>
-                      <ArrowUpRight size={12} className="text-muted opacity-50" />
-                    </td>
+                    <td className="py-3 px-3 font-mono font-semibold text-text">{c.caseId}</td>
                     <td className="py-3 px-3">
-                      <span className={`px-2 py-0.5 rounded-pill border text-[10px] font-medium ${getPriorityStyle(c.priority)}`}>
-                        {c.priority}
-                      </span>
+                      <span className={`font-medium ${getPriorityStyle(c.priority)}`}>{c.priority}</span>
                     </td>
                     <td className="py-3 px-3 text-muted">
                       {c.channel} · <span className="text-text font-medium">{c.customerType}</span>
@@ -125,17 +111,12 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
       {/* 2. Status & Priority Breakdown Distributions */}
       <div className="space-y-6">
         {/* Status Breakdown Card */}
-        <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary">
-              <BarChart2 size={18} />
-            </div>
-            <div>
-              <h3 className="font-head text-base font-semibold text-text tracking-tight">
-                Case Status Distribution
-              </h3>
-              <p className="text-xs text-muted">Volume breakdown by case status</p>
-            </div>
+        <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6">
+          <div className="mb-5">
+            <h3 className="font-head text-base font-semibold text-text tracking-tight">
+              Cases by status
+            </h3>
+            <p className="text-xs text-muted mt-0.5">Volume breakdown by case status</p>
           </div>
 
           <div className="space-y-3">
@@ -149,7 +130,7 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
                   </div>
                   <div className="w-full h-2 rounded-pill bg-surface-2 overflow-hidden border border-border/40">
                     <div
-                      className={`h-full rounded-pill transition-all duration-500 ${getStatusStyle(item.status).split(' ')[0]} bg-primary`}
+                      className="h-full rounded-pill bg-primary/80 transition-all duration-500"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -160,17 +141,12 @@ export default function DashboardTables({ slowestCases = [], statusBreakdown = [
         </div>
 
         {/* Priority Breakdown Card */}
-        <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="p-2 rounded-xl bg-warning/10 text-warning">
-              <BarChart2 size={18} />
-            </div>
-            <div>
-              <h3 className="font-head text-base font-semibold text-text tracking-tight">
-                Priority Distribution
-              </h3>
-              <p className="text-xs text-muted">Volume breakdown by urgency tier</p>
-            </div>
+        <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6">
+          <div className="mb-5">
+            <h3 className="font-head text-base font-semibold text-text tracking-tight">
+              Cases by priority
+            </h3>
+            <p className="text-xs text-muted mt-0.5">Volume breakdown by urgency tier</p>
           </div>
 
           <div className="space-y-3">

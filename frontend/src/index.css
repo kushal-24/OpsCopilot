@@ -23,6 +23,23 @@ body {
   background-size: 24px 24px;
 }
 
+/* Page backdrop: fine violet dot matrix with a soft top tint, fading out
+   toward the edges and bottom so it never competes with the data. */
+.page-backdrop {
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 0%, color-mix(in srgb, var(--color-primary) 9%, transparent), transparent 70%),
+    radial-gradient(color-mix(in srgb, var(--color-primary) 26%, transparent) 1px, transparent 1.4px);
+  background-size: 100% 100%, 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 100% at 50% 0%, #000 35%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 100% at 50% 0%, #000 35%, transparent 78%);
+}
+
+.dark .page-backdrop {
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 0%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 70%),
+    radial-gradient(color-mix(in srgb, var(--color-primary) 38%, transparent) 1px, transparent 1.4px);
+}
+
 /* Ambient violet & purple atmospheric glow lights with subtle parallax float */
 .glow-ambient-left {
   position: absolute;

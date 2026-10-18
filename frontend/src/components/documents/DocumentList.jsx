@@ -24,7 +24,7 @@ export default function DocumentList({ documents = [], isLoading, onDelete, isDe
 
   if (isLoading) {
     return (
-      <div className="rounded-card border border-border bg-surface p-5 sm:p-6 shadow-card animate-pulse space-y-3">
+      <div className="rounded-card border border-border bg-surface p-5 sm:p-6 animate-pulse space-y-3">
         <div className="h-6 bg-surface-2 rounded w-1/3" />
         <div className="h-14 bg-surface-2/60 rounded" />
         <div className="h-14 bg-surface-2/60 rounded" />
@@ -35,9 +35,7 @@ export default function DocumentList({ documents = [], isLoading, onDelete, isDe
   if (documents.length === 0) {
     return (
       <div className="rounded-card border border-dashed border-border/80 bg-surface/50 p-6 sm:p-8 text-center space-y-3 animate-fade-in-up">
-        <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
-          <FileText size={24} />
-        </div>
+        <FileText size={24} className="text-muted mx-auto" />
         <div>
           <h3 className="font-head text-base font-semibold text-text">No SOPs Yet</h3>
           <p className="text-xs text-muted max-w-md mx-auto mt-1">
@@ -53,13 +51,13 @@ export default function DocumentList({ documents = [], isLoading, onDelete, isDe
   }
 
   return (
-    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4 animate-fade-in-up">
+    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4 animate-fade-in-up">
       <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div>
           <h3 className="font-head text-base font-semibold text-text tracking-tight">Your SOP Documents</h3>
           <p className="text-xs text-muted">Attached to your active dataset</p>
         </div>
-        <span className="text-[11px] font-mono px-2 py-0.5 rounded-pill bg-primary/10 text-primary border border-primary/20">
+        <span className="text-xs text-muted">
           {documents.length} {documents.length === 1 ? 'document' : 'documents'}
         </span>
       </div>
@@ -75,9 +73,6 @@ export default function DocumentList({ documents = [], isLoading, onDelete, isDe
               className="p-3.5 rounded-card bg-surface-2/60 border border-border/60 flex items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
-                  <FileText size={18} />
-                </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-semibold text-text truncate">{doc.name}</span>
@@ -108,7 +103,7 @@ export default function DocumentList({ documents = [], isLoading, onDelete, isDe
 
       {pendingDelete && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-surface border border-border rounded-card p-6 max-w-md w-full shadow-2xl space-y-4 animate-scale-in">
+          <div className="bg-surface border border-border rounded-card p-6 max-w-md w-full space-y-4 animate-scale-in">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2 text-danger font-head font-bold text-base">
                 <AlertTriangle size={20} />

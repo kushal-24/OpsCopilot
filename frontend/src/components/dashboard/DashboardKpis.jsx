@@ -1,15 +1,13 @@
-import { Briefcase, CheckCircle2, Clock, AlertTriangle } from 'lucide-react'
-
 /**
- * DashboardKpis — Displays key process telemetry metrics in card layout.
+ * DashboardKpis — Key process metrics as one ruled strip: label, large figure, supporting line.
  */
 export default function DashboardKpis({ kpis, isLoading }) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in-up">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border rounded-card overflow-hidden animate-fade-in-up">
         {[1, 2, 3, 4].map((idx) => (
-          <div key={idx} className="rounded-card border border-border bg-surface p-5 shadow-card animate-pulse space-y-3">
-            <div className="h-4 bg-surface-2 rounded w-1/2" />
+          <div key={idx} className="bg-surface p-5 animate-pulse space-y-3">
+            <div className="h-3 bg-surface-2 rounded w-1/2" />
             <div className="h-8 bg-surface-2 rounded w-3/4" />
             <div className="h-3 bg-surface-2 rounded w-2/3" />
           </div>
@@ -33,66 +31,45 @@ export default function DashboardKpis({ kpis, isLoading }) {
   const cards = [
     {
       id: 'cases',
-      title: 'Total Case Volume',
+      title: 'Total cases',
       value: totalCases.toLocaleString(),
-      subtext: `${completedCases} closed · ${openCases} active`,
-      icon: <Briefcase size={20} className="text-primary" />,
-      badge: 'Active Log',
-      badgeColor: 'bg-primary/10 text-primary border-primary/20',
+      subtext: `${completedCases.toLocaleString()} closed · ${openCases.toLocaleString()} active`,
     },
     {
       id: 'completion',
-      title: 'Completion Rate',
+      title: 'Completion rate',
       value: `${completionRate}%`,
-      subtext: `${totalEvents.toLocaleString()} telemetry events`,
-      icon: <CheckCircle2 size={20} className="text-success" />,
-      badge: `${completedCases}/${totalCases}`,
-      badgeColor: 'bg-success/10 text-success border-success/20',
+      subtext: `${completedCases.toLocaleString()} of ${totalCases.toLocaleString()} cases · ${totalEvents.toLocaleString()} events`,
     },
     {
       id: 'cycletime',
-      title: 'Avg Cycle Time',
+      title: 'Average cycle time',
       value: `${avgCycleTimeHours} hrs`,
-      subtext: `Median duration: ${medianCycleTimeHours} hrs`,
-      icon: <Clock size={20} className="text-primary" />,
-      badge: 'Duration',
-      badgeColor: 'bg-primary/10 text-primary border-primary/20',
+      subtext: `Median ${medianCycleTimeHours} hrs`,
     },
     {
       id: 'bottleneck',
-      title: 'Primary Bottleneck',
+      title: 'Primary bottleneck',
       value: bottleneckActivity || 'None',
-      subtext: bottleneckAvgDurationHours ? `Avg wait: ${bottleneckAvgDurationHours} hrs` : 'No delays recorded',
-      icon: <AlertTriangle size={20} className="text-warning" />,
-      badge: bottleneckAvgDurationHours ? `${bottleneckAvgDurationHours}h avg` : 'Optimal',
-      badgeColor: 'bg-warning/10 text-warning border-warning/20',
+      subtext: bottleneckAvgDurationHours ? `${bottleneckAvgDurationHours} hrs average wait` : 'No delays recorded',
+      accent: true,
     },
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border rounded-card overflow-hidden">
       {cards.map((card, idx) => (
-        <div
-          key={card.id}
-          className={`rounded-card border border-border bg-surface p-4 sm:p-5 shadow-card hover:border-primary/40 transition-all duration-300 animate-fade-in-up reveal-delay-${idx + 1}`}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-muted">{card.title}</span>
-            <div className="p-2 rounded-xl bg-surface-2 border border-border/60 shrink-0">
-              {card.icon}
-            </div>
-          </div>
-
-          <div className="flex items-baseline justify-between gap-2 mb-1">
-            <h3 className="font-head text-xl sm:text-2xl font-bold text-text tracking-tight truncate">
-              {card.value}
-            </h3>
-            <span className={`text-[10px] font-mono px-2 py-0.5 rounded-pill border font-medium shrink-0 ${card.badgeColor}`}>
-              {card.badge}
-            </span>
-          </div>
-
-          <p className="text-xs text-muted truncate">{card.subtext}</p>
+        <div key={card.id} className={`bg-surface p-5 sm:p-6 animate-fade-in-up reveal-delay-${idx + 1}`}>
+          <span className="text-xs font-medium text-muted block mb-2">{card.title}</span>
+          <h3
+            className={`font-head text-2xl sm:text-3xl font-semibold tracking-tight tabular-nums truncate ${
+              card.accent ? 'text-warning' : 'text-text'
+            }`}
+            title={card.value}
+          >
+            {card.value}
+          </h3>
+          <p className="text-xs text-muted mt-1.5 truncate">{card.subtext}</p>
         </div>
       ))}
     </div>

@@ -28,40 +28,44 @@ function Layout() {
       <div className="glow-ambient-left opacity-40 pointer-events-none" aria-hidden="true" />
       <div className="glow-ambient-right opacity-30 pointer-events-none" aria-hidden="true" />
 
-      <aside className="flex w-16 flex-col items-center gap-2 border-r border-border bg-surface/90 backdrop-blur-md py-4 z-20 shadow-sm">
-        <NavLink 
-          to="/"
-          title="Back to Landing Page"
-          className="mb-2 w-10 h-10 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer"
-        >
-          <img src="/logo.png" alt="OpsCopilot Logo" className="w-9 h-9 rounded-xl object-cover shadow-[0_0_16px_rgba(109,85,250,0.5)]" />
-        </NavLink>
-        {NAV_ITEMS.map(({ to, label, icon }) => (
+      {/* Placeholder keeps the content column at the collapsed rail width; the
+          sidebar itself overlays the page when expanded, so nothing reflows. */}
+      <div className="relative w-16 shrink-0 z-20">
+        <aside className="group absolute inset-y-0 left-0 flex w-16 flex-col gap-2 overflow-hidden border-r border-border bg-surface px-3 py-4 transition-[width] duration-200 md:hover:w-56 md:focus-within:w-56">
           <NavLink
-            key={to}
-            to={to}
-            title={label}
-            className={({ isActive }) =>
-              `flex h-10 w-10 items-center justify-center rounded-card transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
-                isActive 
-                  ? 'bg-primary text-primary-fg shadow-[0_0_16px_rgba(109,85,250,0.45)]' 
-                  : 'text-muted hover:bg-surface-2 hover:text-text'
-              }`
-            }
+            to="/"
+            title="Back to Landing Page"
+            className="mb-2 flex h-10 w-10 shrink-0 items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer"
           >
-            {icon}
+            <img src="/logo.png" alt="OpsCopilot Logo" className="w-9 h-9 rounded-xl object-cover" />
           </NavLink>
-        ))}
-      </aside>
+          {NAV_ITEMS.map(({ to, label, icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              title={label}
+              className={({ isActive }) =>
+                `flex h-10 w-full shrink-0 items-center gap-3 rounded-card px-2.5 transition-colors duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-primary text-primary-fg'
+                    : 'text-muted hover:bg-surface-2 hover:text-text'
+                }`
+              }
+            >
+              <span className="shrink-0">{icon}</span>
+              <span className="hidden md:block whitespace-nowrap text-sm font-medium opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">
+                {label}
+              </span>
+            </NavLink>
+          ))}
+        </aside>
+      </div>
 
       <div className="flex flex-1 flex-col overflow-hidden z-10">
         <header className="flex h-14 items-center justify-between border-b border-border bg-surface/90 backdrop-blur-md px-5 transition-colors">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/dashboard')}>
             <img src="/logo.png" alt="OpsCopilot Logo" className="w-6 h-6 rounded-lg object-cover transition-transform duration-300 group-hover:scale-110" />
             <span className="font-head text-lg font-semibold tracking-tight">OpsCopilot</span>
-            <span className="ml-2 text-[10px] font-mono px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 animate-pulse-glow">
-              Telemetry Studio
-            </span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -96,7 +100,8 @@ function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-4 sm:p-6 bg-bg/50">
+        <main className="relative isolate flex-1 overflow-auto p-4 sm:p-6 bg-bg/50">
+          <div className="page-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px]" aria-hidden="true" />
           <div key={location.pathname} className="animate-fade-in-up h-full">
             <Outlet />
           </div>

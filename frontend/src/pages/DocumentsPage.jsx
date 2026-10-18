@@ -5,7 +5,7 @@ import * as datasetApi from '../api/dataset.api'
 import * as documentsApi from '../api/documents.api'
 import DocumentUploadZone from '../components/documents/DocumentUploadZone'
 import DocumentList from '../components/documents/DocumentList'
-import { FileText, CheckCircle2, Database } from 'lucide-react'
+import { CheckCircle2, Database } from 'lucide-react'
 
 /**
  * DocumentsPage — SOP document management route (`/document`).
@@ -57,10 +57,7 @@ export default function DocumentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-5">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary">
-              <FileText size={22} />
-            </div>
-            <h1 className="font-head text-2xl sm:text-3xl font-bold text-text tracking-tight">
+            <h1 className="font-head text-2xl sm:text-3xl font-semibold text-text tracking-tight">
               SOP Documents
             </h1>
           </div>
@@ -87,9 +84,7 @@ export default function DocumentsPage() {
 
       {!isDatasetLoading && !datasetInfo ? (
         <div className="rounded-card border border-dashed border-border/80 bg-surface/50 p-6 sm:p-8 text-center space-y-3 animate-fade-in-up">
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
-            <Database size={24} />
-          </div>
+          <Database size={24} className="text-muted mx-auto" />
           <div>
             <h3 className="font-head text-base font-semibold text-text">No Active Dataset</h3>
             <p className="text-xs text-muted max-w-md mx-auto mt-1">
@@ -97,7 +92,7 @@ export default function DocumentsPage() {
             </p>
             <Link
               to="/data"
-              className="inline-block mt-3 px-3 py-1.5 rounded-pill bg-primary/10 text-primary text-xs font-medium border border-primary/20 hover:bg-primary/15"
+              className="inline-block mt-3 px-3 py-1.5 rounded-card bg-surface text-primary text-xs font-medium border border-border hover:bg-surface-2"
             >
               Go to Data Management
             </Link>

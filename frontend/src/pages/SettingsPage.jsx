@@ -62,10 +62,7 @@ export default function SettingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-5">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary">
-              <Settings size={22} />
-            </div>
-            <h1 className="font-head text-2xl sm:text-3xl font-bold text-text tracking-tight">
+            <h1 className="font-head text-2xl sm:text-3xl font-semibold text-text tracking-tight">
               Settings & Preferences
             </h1>
           </div>

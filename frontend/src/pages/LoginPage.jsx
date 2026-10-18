@@ -32,11 +32,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={`min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 font-body relative overflow-hidden selection:bg-[#6D55FA] selection:text-white transition-colors duration-250 ${
+    <div className={`min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 font-body relative isolate overflow-hidden selection:bg-[#6D55FA] selection:text-white transition-colors duration-250 ${
       isDark ? 'bg-[#08070C] text-white' : 'bg-[#F8F9FC] text-[#0F0E17]'
     }`}>
-      
       {/* Ambient Violet Glow Lighting with Parallax Float */}
+      <div className="page-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px]" aria-hidden="true" />
       <div className="glow-ambient-left" aria-hidden="true" />
       <div className="glow-ambient-right" aria-hidden="true" />
 
@@ -83,7 +83,6 @@ export default function LoginPage() {
           containerRevealed ? 'reveal-active' : ''
         }`}
       >
-        
         {/* Brand Logo & Tagline */}
         <div className="flex flex-col items-center mb-8">
           <Link to="/" className="flex items-center gap-3 no-underline group mb-2">
@@ -109,7 +108,6 @@ export default function LoginPage() {
             ? 'bg-[#0F0E17] border-[#222033] shadow-[0_20px_50px_rgba(0,0,0,0.8)]' 
             : 'bg-white border-[#E2E5EE] shadow-[0_20px_50px_rgba(27,24,48,0.08)]'
         }`}>
-          
           <div className="absolute -top-20 -right-20 w-44 h-44 bg-[#6D55FA]/20 rounded-full blur-2xl pointer-events-none animate-pulse-glow" />
 
           <div className="text-center mb-7">
@@ -132,7 +130,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className={`block text-xs font-mono mb-1.5 uppercase tracking-wider ${
+              <label className={`block text-xs mb-1.5 ${
                 isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
               }`}>
                 Email Address
@@ -154,7 +152,7 @@ export default function LoginPage() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className={`block text-xs font-mono uppercase tracking-wider ${
+                <label className={`block text-xs ${
                   isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'
                 }`}>
                   Password

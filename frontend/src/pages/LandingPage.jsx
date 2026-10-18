@@ -123,13 +123,13 @@ export default function LandingPage() {
   }
 
   return (
-    <div className={`min-h-screen font-body relative overflow-x-hidden selection:bg-[#6D55FA] selection:text-white transition-colors duration-250 ${
+    <div className={`min-h-screen font-body relative isolate overflow-x-hidden selection:bg-[#6D55FA] selection:text-white transition-colors duration-250 ${
       isDark ? 'bg-[#08070C] text-white' : 'bg-[#F8F9FC] text-[#0F0E17]'
     }`}>
-      
       {/* ──────────────────────────────────────────────────────────────────────────
           ATMOSPHERIC AMBIENT PURPLE GLOWS WITH PARALLAX FLOAT
          ────────────────────────────────────────────────────────────────────────── */}
+      <div className="page-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[640px]" aria-hidden="true" />
       <div className="glow-ambient-left" aria-hidden="true" />
       <div className="glow-ambient-right" aria-hidden="true" />
       <div className="glow-ambient-center" aria-hidden="true" />
@@ -143,7 +143,6 @@ export default function LandingPage() {
           : 'bg-[#F8F9FC]/85 border-[#E2E5EE]/80'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-          
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3 no-underline group">
             <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(109,85,250,0.5)] transition-transform duration-200 group-hover:scale-105">
@@ -182,7 +181,6 @@ export default function LandingPage() {
 
           {/* Right Header Actions (Desktop: sm and above) */}
           <div className="hidden sm:flex items-center gap-3">
-            
             <Link 
               to="/login" 
               className={`text-sm font-medium transition-colors px-3 py-1.5 rounded-full ${
@@ -307,7 +305,6 @@ export default function LandingPage() {
           heroRevealed ? 'reveal-active' : ''
         }`}
       >
-        
         {/* Technical Platform Badge */}
         <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-mono mb-8 border ${
           isDark 
@@ -335,7 +332,6 @@ export default function LandingPage() {
 
         {/* ── ACTION BUTTON CLUSTER ── */}
         <div className="flex flex-wrap items-center justify-center gap-3.5 mb-4">
-          
           <Link
             to="/dashboard"
             className="px-7 py-3 rounded-xl bg-[#6D55FA] hover:bg-[#5B41E8] active:bg-[#4C34C7] text-white font-semibold text-sm transition-all duration-200 cursor-pointer inline-flex items-center gap-2 group shadow-sm"
@@ -378,14 +374,12 @@ export default function LandingPage() {
             HERO APP WINDOW MOCKUP
            ────────────────────────────────────────────────────────────────────────── */}
         <div className="w-full max-w-4xl relative mt-4 group">
-          
           {/* Window Container */}
           <div className={`rounded-2xl overflow-hidden text-left border shadow-2xl transition-all duration-300 ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]' 
               : 'bg-white border-[#E2E5EE] shadow-[0_25px_60px_-15px_rgba(27,24,48,0.1)]'
           }`}>
-            
             {/* MacOS Window Top Header */}
             <div className={`px-5 py-3.5 border-b flex items-center justify-between ${
               isDark ? 'bg-[#0A0912] border-[#222033]' : 'bg-[#F1F3F9] border-[#E2E5EE]'
@@ -414,12 +408,10 @@ export default function LandingPage() {
             <div className={`grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x ${
               isDark ? 'divide-[#222033]' : 'divide-[#E2E5EE]'
             }`}>
-              
               {/* Left Column (8 cols): Conversational Copilot Stream */}
               <div className={`md:col-span-8 p-6 flex flex-col justify-between space-y-5 ${
                 isDark ? 'bg-[#0F0E17]' : 'bg-white'
               }`}>
-                
                 {/* Channel Header */}
                 <div className={`flex items-center justify-between pb-3 border-b ${
                   isDark ? 'border-[#222033]/60' : 'border-[#E2E5EE]'
@@ -439,7 +431,6 @@ export default function LandingPage() {
 
                 {/* Chat Bubbles */}
                 <div className="space-y-4 text-xs leading-relaxed">
-                  
                   <div className="flex items-start gap-3">
                     <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-sm">
                       <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />
@@ -514,12 +505,11 @@ export default function LandingPage() {
                 isDark ? 'bg-[#13121F]' : 'bg-[#FAFAFD]'
               }`}>
                 <div>
-                  <span className={`text-xs font-mono uppercase tracking-wider block mb-1 ${
+                  <span className={`text-xs block mb-1 ${
                     isDark ? 'text-[#64748B]' : 'text-[#64748B]'
                   }`}>
                     Process Health
                   </span>
-                  
                   {/* Big Score */}
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className={`text-4xl font-extrabold font-head tracking-tight ${
@@ -539,7 +529,7 @@ export default function LandingPage() {
 
                 {/* Qualification Checklist */}
                 <div className={`space-y-3 pt-4 border-t ${isDark ? 'border-[#222033]' : 'border-[#E2E5EE]'}`}>
-                  <span className={`text-xs font-mono uppercase tracking-wider block mb-2 ${
+                  <span className={`text-xs block mb-2 ${
                     isDark ? 'text-[#64748B]' : 'text-[#64748B]'
                   }`}>
                     Verification
@@ -613,7 +603,6 @@ export default function LandingPage() {
           INTERACTIVE PROCESS MINING TELEMETRY WORKSPACE (Scroll Reveal)
          ────────────────────────────────────────────────────────────────────────── */}
       <section id="telemetry-workspace" className="relative z-10 py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        
         {/* Workspace Card */}
         <div 
           ref={workspaceRef}
@@ -625,7 +614,6 @@ export default function LandingPage() {
               : 'bg-white border-[#E2E5EE] shadow-[0_20px_50px_rgba(27,24,48,0.08)]'
           }`}
         >
-          
           <div className="absolute top-0 right-0 w-72 h-72 bg-[#6D55FA]/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#8B5CF6]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -705,7 +693,7 @@ export default function LandingPage() {
                     }`}
                   >
                     {isBottleneck && (
-                      <span className="absolute -top-2.5 right-2 bg-[#DC2626] text-white text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm animate-pulse">
+                      <span className="absolute -top-2.5 right-2 bg-[#DC2626] text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm animate-pulse">
                         <AlertTriangle className="w-2.5 h-2.5" />
                         Bottleneck
                       </span>
@@ -745,13 +733,12 @@ export default function LandingPage() {
 
           {/* Selected Step Telemetry Inspection Panel */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            
             <div className={`lg:col-span-4 p-5 rounded-2xl border space-y-4 ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <span className={`text-[11px] font-mono uppercase ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
+                  <span className={`text-[11px] ${isDark ? 'text-[#64748B]' : 'text-[#64748B]'}`}>
                     Selected Step Telemetry
                   </span>
                   <h4 className={`font-head font-bold text-base ${isDark ? 'text-white' : 'text-[#0F0E17]'}`}>
@@ -893,7 +880,7 @@ export default function LandingPage() {
         }`}
       >
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs font-mono text-[#6D55FA] uppercase tracking-wider font-semibold">
+          <span className="text-xs text-[#6D55FA] font-semibold">
             ENGINEERED FOR PRODUCTION OPERATIONS
           </span>
           <h2 className={`font-editorial text-4xl sm:text-5xl font-normal tracking-tight mt-2 ${
@@ -904,7 +891,6 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
           <div className={`rounded-3xl p-7 transition-all duration-300 flex flex-col justify-between group border shadow-sm ${
             isDark 
               ? 'bg-[#0F0E17] border-[#222033] hover:border-[#6D55FA]/50' 
@@ -993,9 +979,8 @@ export default function LandingPage() {
         <div className={`rounded-3xl p-8 sm:p-10 border transition-colors ${
           isDark ? 'bg-[#0F0E17] border-[#222033]' : 'bg-white border-[#E2E5EE]'
         }`}>
-          
           <div className="max-w-3xl mb-8">
-            <span className="text-xs font-mono text-[#6D55FA] font-semibold uppercase tracking-wider">
+            <span className="text-xs text-[#6D55FA] font-semibold">
               ENTERPRISE DATA ARCHITECTURE
             </span>
             <h3 className={`font-editorial text-3xl sm:text-4xl font-normal mt-1 ${
@@ -1009,7 +994,6 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            
             <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
               isDark ? 'bg-[#13121F] border-[#222033]' : 'bg-[#F8F9FC] border-[#E2E5EE]'
             }`}>
@@ -1097,7 +1081,6 @@ export default function LandingPage() {
             ? 'bg-[#0F0E17] border-[#222033]' 
             : 'bg-white border-[#E2E5EE]'
         }`}>
-          
           <h2 className={`font-head text-3xl sm:text-4xl font-bold tracking-tight mb-3 relative z-10 ${
             isDark ? 'text-white' : 'text-[#0F0E17]'
           }`}>
@@ -1116,7 +1099,6 @@ export default function LandingPage() {
             >
               Launch Telemetry Console
             </Link>
-            
             <Link
               to="/signup"
               className={`px-7 py-3 rounded-xl font-medium text-sm transition-all cursor-pointer border ${
@@ -1138,7 +1120,6 @@ export default function LandingPage() {
         isDark ? 'border-[#222033] bg-[#0A0912]' : 'border-[#E2E5EE] bg-[#F1F3F9]'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 rounded-md overflow-hidden shrink-0 shadow-sm">
               <img src="/logo.png" alt="OpsCopilot" className="w-full h-full object-cover" />

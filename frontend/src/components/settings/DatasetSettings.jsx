@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Database, Key, Eye, EyeOff, RotateCcw, ArrowRight } from 'lucide-react'
+import { Key, Eye, EyeOff, RotateCcw, ArrowRight } from 'lucide-react'
 
 /**
  * DatasetSettings — Dataset quick actions and workspace Gemini API Key field.
@@ -19,11 +19,8 @@ export default function DatasetSettings({ onLoadDemo, isDemoLoading }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in-up">
       {/* 1. Dataset Quick Controls Card */}
-      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4">
+      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-            <Database size={18} />
-          </div>
           <div>
             <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
               Active Dataset Controls
@@ -41,7 +38,7 @@ export default function DatasetSettings({ onLoadDemo, isDemoLoading }) {
             <button
               onClick={onLoadDemo}
               disabled={isDemoLoading}
-              className="px-3 py-1.5 rounded-card bg-surface border border-border text-text font-semibold hover:bg-surface-2 flex items-center gap-1.5 self-start sm:self-auto shadow-sm cursor-pointer disabled:opacity-50"
+              className="px-3 py-1.5 rounded-card bg-surface border border-border text-text font-semibold hover:bg-surface-2 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer disabled:opacity-50"
             >
               <RotateCcw size={13} className={isDemoLoading ? 'animate-spin text-primary' : ''} />
               <span>{isDemoLoading ? 'Seeding...' : 'Reset Demo'}</span>
@@ -55,7 +52,7 @@ export default function DatasetSettings({ onLoadDemo, isDemoLoading }) {
             </div>
             <Link
               to="/data"
-              className="px-3 py-1.5 rounded-card bg-primary text-primary-fg font-semibold hover:bg-primary-hover flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+              className="px-3 py-1.5 rounded-card bg-primary text-primary-fg font-semibold hover:bg-primary-hover flex items-center gap-1.5 self-start sm:self-auto"
             >
               <span>Go to Data Hub</span>
               <ArrowRight size={13} />
@@ -65,11 +62,8 @@ export default function DatasetSettings({ onLoadDemo, isDemoLoading }) {
       </div>
 
       {/* 2. Workspace Gemini API Key Field */}
-      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4">
+      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-            <Key size={18} />
-          </div>
           <div>
             <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
               Gemini API Key Configuration
@@ -103,7 +97,7 @@ export default function DatasetSettings({ onLoadDemo, isDemoLoading }) {
 
           <button
             type="submit"
-            className="px-4 py-2 rounded-card bg-surface border border-border text-xs font-semibold text-text hover:bg-surface-2 shadow-sm cursor-pointer"
+            className="px-4 py-2 rounded-card bg-surface border border-border text-xs font-semibold text-text hover:bg-surface-2 cursor-pointer"
           >
             {keySaved ? 'API Key Saved!' : 'Save Key Override'}
           </button>

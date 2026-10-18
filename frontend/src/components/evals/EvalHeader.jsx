@@ -1,4 +1,4 @@
-import { ClipboardCheck, Calendar, ChevronDown, CheckCircle2 } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 /**
  * EvalHeader — Displays evaluation suite header, historic run selector dropdown, and run metadata.
@@ -25,10 +25,7 @@ export default function EvalHeader({
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-5 animate-fade-in-up">
       <div>
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary">
-            <ClipboardCheck size={22} />
-          </div>
-          <h1 className="font-head text-2xl sm:text-3xl font-bold text-text tracking-tight">
+          <h1 className="font-head text-2xl sm:text-3xl font-semibold text-text tracking-tight">
             AI Agent Evaluations
           </h1>
         </div>
@@ -46,7 +43,7 @@ export default function EvalHeader({
               value={selectedRunId || currentRun?.id || ''}
               onChange={(e) => onSelectRun(e.target.value)}
               disabled={runs.length === 0}
-              className="appearance-none bg-surface border border-border rounded-card px-3.5 py-2 pr-9 text-xs font-semibold text-text focus:outline-none focus:border-primary cursor-pointer shadow-sm min-w-[220px] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="appearance-none bg-surface border border-border rounded-card px-3.5 py-2 pr-9 text-xs font-semibold text-text focus:outline-none focus:border-primary cursor-pointer min-w-[220px] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {runs.length === 0 ? (
                 <option value="">No benchmark runs recorded</option>

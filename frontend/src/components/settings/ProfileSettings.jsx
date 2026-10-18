@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { User, Lock, CheckCircle2, AlertCircle, Save } from 'lucide-react'
+import { Lock, CheckCircle2, AlertCircle, Save } from 'lucide-react'
 
 /**
  * ProfileSettings — Allows operators to update their full name and change their password.
@@ -87,11 +87,8 @@ export default function ProfileSettings({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in-up">
       {/* 1. Account Profile Details Form */}
-      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4">
+      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-            <User size={18} />
-          </div>
           <div>
             <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
               Profile Information
@@ -138,7 +135,7 @@ export default function ProfileSettings({
           <button
             type="submit"
             disabled={isUpdatingProfile}
-            className="px-4 py-2 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
           >
             <Save size={14} />
             <span>{isUpdatingProfile ? 'Saving...' : 'Save Profile Changes'}</span>
@@ -147,11 +144,8 @@ export default function ProfileSettings({
       </div>
 
       {/* 2. Security / Change Password Form */}
-      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4">
+      <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-            <Lock size={18} />
-          </div>
           <div>
             <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
               Change Password
@@ -210,7 +204,7 @@ export default function ProfileSettings({
           <button
             type="submit"
             disabled={isChangingPassword}
-            className="px-4 py-2 rounded-card bg-surface border border-border text-xs font-semibold text-text hover:bg-surface-2 flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 rounded-card bg-surface border border-border text-xs font-semibold text-text hover:bg-surface-2 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
           >
             <Lock size={14} />
             <span>{isChangingPassword ? 'Updating...' : 'Update Password'}</span>

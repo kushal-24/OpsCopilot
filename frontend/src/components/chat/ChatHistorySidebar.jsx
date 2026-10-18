@@ -22,7 +22,7 @@ export default function ChatHistorySidebar({
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-30 w-64 bg-surface border-r border-border p-4 flex flex-col justify-between transition-transform duration-300 md:static md:translate-x-0 ${
-        isOpenMobile ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        isOpenMobile ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       <div className="space-y-4 overflow-hidden flex flex-col h-full">
@@ -43,7 +43,7 @@ export default function ChatHistorySidebar({
         <button
           onClick={onCreateSession}
           disabled={isCreating}
-          className="w-full py-2.5 px-3 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer disabled:opacity-50"
+          className="w-full py-2.5 px-3 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
         >
           <Plus size={16} />
           <span>{isCreating ? 'Creating...' : 'New Chat Session'}</span>

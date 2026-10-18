@@ -4,7 +4,7 @@ import * as datasetApi from '../api/dataset.api'
 import DatasetInfoCard from '../components/data/DatasetInfoCard'
 import DatasetUploadZone from '../components/data/DatasetUploadZone'
 import DatasetDemoAction from '../components/data/DatasetDemoAction'
-import { Database, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 
 /**
  * DataPage — Main Phase 5 Data Management Route (`/data`).
@@ -56,10 +56,7 @@ export default function DataPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-5">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary">
-              <Database size={22} />
-            </div>
-            <h1 className="font-head text-2xl sm:text-3xl font-bold text-text tracking-tight">
+            <h1 className="font-head text-2xl sm:text-3xl font-semibold text-text tracking-tight">
               Data Management
             </h1>
           </div>

@@ -14,11 +14,8 @@ export default function DangerZone({ onLogout, onDeleteAccount, isDeleting }) {
   }
 
   return (
-    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4 animate-fade-in-up">
+    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4 animate-fade-in-up">
       <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-        <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-          <AlertTriangle size={18} />
-        </div>
         <div>
           <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
             Security & Session Actions
@@ -36,7 +33,7 @@ export default function DangerZone({ onLogout, onDeleteAccount, isDeleting }) {
           </div>
           <button
             onClick={onLogout}
-            className="px-4 py-2 rounded-card bg-surface border border-border hover:bg-surface-2 text-text text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer self-start"
+            className="px-4 py-2 rounded-card bg-surface border border-border hover:bg-surface-2 text-text text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer self-start"
           >
             <LogOut size={14} />
             <span>Sign Out</span>
@@ -51,7 +48,7 @@ export default function DangerZone({ onLogout, onDeleteAccount, isDeleting }) {
           </div>
           <button
             onClick={() => setShowDeleteModal(true)}
-            className="px-4 py-2 rounded-card bg-surface border border-danger text-danger hover:bg-danger/10 text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer self-start"
+            className="px-4 py-2 rounded-card bg-surface border border-danger text-danger hover:bg-danger/10 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer self-start"
           >
             <Trash2 size={14} />
             <span>Delete Account</span>
@@ -62,7 +59,7 @@ export default function DangerZone({ onLogout, onDeleteAccount, isDeleting }) {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-surface border border-border rounded-card p-6 max-w-md w-full shadow-2xl space-y-4 animate-scale-in">
+          <div className="bg-surface border border-border rounded-card p-6 max-w-md w-full space-y-4 animate-scale-in">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2 text-danger font-head font-bold text-base">
                 <AlertTriangle size={20} />

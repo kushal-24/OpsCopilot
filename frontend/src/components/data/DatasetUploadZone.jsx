@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { UploadCloud, FileSpreadsheet, AlertCircle, CheckCircle2, Info, X } from 'lucide-react'
+import { UploadCloud, AlertCircle, CheckCircle2, Info, X } from 'lucide-react'
 
 const REQUIRED_COLUMNS = [
   'event_id',
@@ -107,7 +107,7 @@ export default function DatasetUploadZone({ onUpload, isUploading, uploadError }
   }
 
   return (
-    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4 transition-all animate-fade-in-up">
+    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4 transition-all animate-fade-in-up">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/60 pb-3">
         <div>
           <h3 className="font-head text-base font-semibold text-text tracking-tight">
@@ -172,23 +172,18 @@ export default function DatasetUploadZone({ onUpload, isUploading, uploadError }
               onChange={handleFileChange}
               className="hidden"
             />
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-              <UploadCloud size={24} />
-            </div>
+            <UploadCloud size={24} className="text-muted mx-auto mb-3" />
             <h4 className="font-head text-sm font-semibold text-text mb-1">
               Drag & drop your CSV file here
             </h4>
             <p className="text-xs text-muted mb-3">Or click to browse from your device (Max 10MB)</p>
-            <span className="inline-block px-3 py-1.5 rounded-pill bg-primary/10 text-primary text-xs font-medium border border-primary/20">
+            <span className="inline-block px-3 py-1.5 rounded-card bg-surface text-primary text-xs font-medium border border-border">
               Select .CSV File
             </span>
           </div>
         ) : (
           <div className="p-4 rounded-card border border-border bg-surface-2/50 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="p-2.5 rounded-xl bg-success/15 text-success shrink-0">
-                <FileSpreadsheet size={22} />
-              </div>
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-text truncate">{file.name}</p>
                 <p className="text-[11px] font-mono text-muted">{formatFileSize(file.size)}</p>
@@ -232,7 +227,7 @@ export default function DatasetUploadZone({ onUpload, isUploading, uploadError }
             <button
               type="submit"
               disabled={isUploading}
-              className="w-full py-2.5 px-4 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:opacity-50"
+              className="w-full py-2.5 px-4 rounded-card bg-primary text-primary-fg text-xs font-semibold hover:bg-primary-hover flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer disabled:opacity-50"
             >
               {isUploading ? (
                 <>

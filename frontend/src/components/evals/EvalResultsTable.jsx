@@ -10,13 +10,10 @@ export default function EvalResultsTable({ results = [], failuresOnly, onToggleF
   const filteredResults = failuresOnly ? results.filter((r) => !r.pass) : results
 
   return (
-    <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 shadow-card space-y-4 animate-fade-in-up">
+    <div className="rounded-card border border-border bg-surface p-3.5 sm:p-6 space-y-4 animate-fade-in-up">
       {/* Header & Failures-Only Filter Toggle */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-            <Filter size={18} />
-          </div>
           <div>
             <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
               Benchmark Test Results
@@ -26,12 +23,12 @@ export default function EvalResultsTable({ results = [], failuresOnly, onToggleF
         </div>
 
         {/* Failures-only filter tab */}
-        <div className="flex items-center gap-1.5 p-1 rounded-pill bg-surface-2 border border-border/60 self-start sm:self-auto text-xs font-medium">
+        <div className="flex items-center gap-1.5 p-1 rounded-card bg-surface-2 border border-border/60 self-start sm:self-auto text-xs font-medium">
           <button
             onClick={() => onToggleFailures(false)}
-            className={`px-3 py-1 rounded-pill transition-all cursor-pointer ${
+            className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
               !failuresOnly
-                ? 'bg-primary text-white shadow-sm font-semibold'
+                ? 'bg-primary text-white font-semibold'
                 : 'text-muted hover:text-text'
             }`}
           >
@@ -39,9 +36,9 @@ export default function EvalResultsTable({ results = [], failuresOnly, onToggleF
           </button>
           <button
             onClick={() => onToggleFailures(true)}
-            className={`px-3 py-1 rounded-pill transition-all cursor-pointer ${
+            className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
               failuresOnly
-                ? 'bg-danger text-white shadow-sm font-semibold'
+                ? 'bg-danger text-white font-semibold'
                 : 'text-muted hover:text-text'
             }`}
           >
@@ -67,7 +64,7 @@ export default function EvalResultsTable({ results = [], failuresOnly, onToggleF
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-border/60 text-muted font-mono uppercase text-[10px]">
+              <tr className="border-b border-border/60 text-muted text-xs font-semibold">
                 <th className="py-2.5 px-3">Test ID & Question</th>
                 <th className="py-2.5 px-3">Expected Ground-Truth</th>
                 <th className="py-2.5 px-3">Actual AI Response</th>
@@ -133,11 +130,11 @@ export default function EvalResultsTable({ results = [], failuresOnly, onToggleF
                     {/* Pass/Fail Status */}
                     <td className="py-3 px-3 align-top text-right whitespace-nowrap">
                       {row.pass ? (
-                        <span className="px-2.5 py-1 rounded-pill bg-success/10 text-success border border-success/30 text-[11px] font-bold inline-flex items-center gap-1 shadow-sm">
+                        <span className="px-2.5 py-1 rounded-pill bg-success/10 text-success border border-success/30 text-[11px] font-semibold inline-flex items-center gap-1">
                           <CheckCircle2 size={12} /> PASS
                         </span>
                       ) : (
-                        <span className="px-2.5 py-1 rounded-pill bg-danger/10 text-danger border border-danger/30 text-[11px] font-bold inline-flex items-center gap-1 shadow-sm">
+                        <span className="px-2.5 py-1 rounded-pill bg-danger/10 text-danger border border-danger/30 text-[11px] font-semibold inline-flex items-center gap-1">
                           <XCircle size={12} /> FAIL
                         </span>
                       )}

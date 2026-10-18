@@ -27,10 +27,10 @@ export default function ChatMessageItem({ message }) {
     <div className={`flex gap-3 max-w-4xl mx-auto my-3 animate-fade-in-up ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
       {/* Avatar */}
       <div
-        className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 shadow-sm ${
+        className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${
           isUser
             ? 'bg-surface-2 border border-border text-text'
-            : 'bg-primary text-white shadow-[0_0_12px_rgba(109,85,250,0.4)]'
+            : 'bg-primary text-white '
         }`}
       >
         {isUser ? <User size={16} /> : <Sparkles size={16} />}
@@ -47,7 +47,7 @@ export default function ChatMessageItem({ message }) {
 
         {/* Message Bubble */}
         <div
-          className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed font-body transition-all shadow-sm ${
+          className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed font-body transition-all ${
             isUser
               ? 'bg-primary text-primary-fg rounded-tr-none'
               : 'bg-surface border border-border text-text rounded-tl-none'
@@ -64,7 +64,7 @@ export default function ChatMessageItem({ message }) {
               className="w-full flex items-center justify-between text-[11px] font-mono font-medium text-primary hover:text-primary-hover cursor-pointer"
             >
               <div className="flex items-center gap-1.5">
-                <Wrench size={13} className="animate-pulse" />
+                <Wrench size={13} />
                 <span>⚡ Grounded Tool Reasoning ({toolCalls.length} {toolCalls.length === 1 ? 'tool call' : 'tool calls'} executed)</span>
               </div>
               {showTrustPanel ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

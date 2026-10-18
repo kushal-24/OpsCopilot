@@ -1,5 +1,5 @@
 import { useTheme } from '../../theme/theme'
-import { Sun, Moon, Palette, CheckCircle2 } from 'lucide-react'
+import { Sun, Moon, CheckCircle2 } from 'lucide-react'
 
 /**
  * AppearanceSettings — Interactive theme toggle cards for Dark Mode vs Light Mode switching.
@@ -8,11 +8,8 @@ export default function AppearanceSettings() {
   const { isDark, toggleTheme, setTheme } = useTheme()
 
   return (
-    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 shadow-card space-y-4 animate-fade-in-up">
+    <div className="rounded-card border border-border bg-surface p-4 sm:p-6 space-y-4 animate-fade-in-up">
       <div className="flex items-center gap-2.5 border-b border-border/60 pb-3">
-        <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
-          <Palette size={18} />
-        </div>
         <div>
           <h3 className="font-head text-sm sm:text-base font-semibold text-text tracking-tight">
             Appearance & Interface Theme
@@ -27,7 +24,7 @@ export default function AppearanceSettings() {
           onClick={() => setTheme('dark')}
           className={`p-4 rounded-card border-2 cursor-pointer transition-all flex flex-col justify-between gap-3 ${
             isDark
-              ? 'border-primary bg-surface-2 shadow-[0_0_20px_rgba(109,85,250,0.25)]'
+              ? 'border-primary bg-surface-2 '
               : 'border-border bg-surface/60 hover:border-primary/50'
           }`}
         >
@@ -55,7 +52,7 @@ export default function AppearanceSettings() {
           onClick={() => setTheme('light')}
           className={`p-4 rounded-card border-2 cursor-pointer transition-all flex flex-col justify-between gap-3 ${
             !isDark
-              ? 'border-primary bg-surface-2 shadow-[0_0_20px_rgba(109,85,250,0.25)]'
+              ? 'border-primary bg-surface-2 '
               : 'border-border bg-surface/60 hover:border-primary/50'
           }`}
         >

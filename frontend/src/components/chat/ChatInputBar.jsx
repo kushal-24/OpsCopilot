@@ -31,9 +31,9 @@ export default function ChatInputBar({ onSendMessage, isSending, disabled }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-3 sm:p-4 border-t border-border bg-surface/90 backdrop-blur-md">
+    <form onSubmit={handleSubmit} className="p-3 sm:p-4 border-t border-border bg-surface">
       <div className="max-w-4xl mx-auto space-y-2">
-        <div className="relative flex items-center rounded-2xl bg-surface-2 border border-border/80 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all shadow-sm">
+        <div className="relative flex items-center rounded-2xl bg-surface-2 border border-border/80 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
           <textarea
             ref={textareaRef}
             rows={1}
@@ -53,7 +53,7 @@ export default function ChatInputBar({ onSendMessage, isSending, disabled }) {
             type="submit"
             disabled={!content.trim() || isSending || disabled}
             title="Send Query"
-            className="absolute right-2 p-2 rounded-xl bg-primary text-primary-fg hover:bg-primary-hover disabled:opacity-40 disabled:hover:bg-primary transition-all cursor-pointer shadow-sm"
+            className="absolute right-2 p-2 rounded-xl bg-primary text-primary-fg hover:bg-primary-hover disabled:opacity-40 disabled:hover:bg-primary transition-all cursor-pointer"
           >
             {isSending ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
