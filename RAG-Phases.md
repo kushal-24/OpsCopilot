@@ -95,10 +95,10 @@ QUERY (every chat question)
 
 **Learn:** top-k, distance scores, and metadata filtering (access control).
 
-- [ ] `services/retrieval.service.ts`: embed the query, query Chroma with `where: { datasetId }`, return top-k chunks with source and score
-- [ ] Add a minimum-relevance cutoff so unrelated questions return "nothing found" instead of garbage
-- [ ] Temporary debug endpoint or script: ask a question, see the retrieved chunks
-- [ ] Verify dataset isolation: user A's question never returns user B's chunks
+- [x] `services/retrieval.service.ts`: embed the query, query Chroma with `where: { datasetId }`, return top-k chunks with source and score
+- [x] Add a minimum-relevance cutoff so unrelated questions return "nothing found" instead of garbage
+- [x] Temporary debug endpoint or script: ask a question, see the retrieved chunks
+- [x] Verify dataset isolation: user A's question never returns user B's chunks
 
 **Done when:** a policy question returns the right chunks, and an unrelated question returns none.
 
@@ -108,11 +108,11 @@ QUERY (every chat question)
 
 **Learn:** how tool-calling does the "augment" step, and how grounding prevents made-up answers.
 
-- [ ] Add a `search_docs` tool definition to `tools/` (name, description, parameter `query`)
-- [ ] Register it with the chat agent next to the analytics tools; handle the call in `chat.service.ts`
-- [ ] Update the system prompt: use `search_docs` for policy/SOP questions, cite the source document, and say so if the SOPs don't cover it
-- [ ] Store the tool call and its results in `toolCalls` (same shape as the existing tools)
-- [ ] Test mixed questions: "Is our approval time within the SOP target?" (needs both SQL and SOP)
+- [x] Add a `search_docs` tool definition to `tools/` (name, description, parameter `query`)
+- [x] Register it with the chat agent next to the analytics tools; handle the call in `chat.service.ts`
+- [x] Update the system prompt: use `search_docs` for policy/SOP questions, cite the source document, and say so if the SOPs don't cover it
+- [x] Store the tool call and its results in `toolCalls` (same shape as the existing tools)
+- [x] Test mixed questions: "Is our approval time within the SOP target?" (needs both SQL and SOP)
 
 **Done when:** chat answers SOP questions from the documents and cites them.
 

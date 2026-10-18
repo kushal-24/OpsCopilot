@@ -5,6 +5,7 @@ import {
   createPartFromFunctionResponse,
 } from "@google/genai";
 import { analyticsTools, ToolContext } from "../tools/analyticsTools";
+import { sopTools } from "../tools/sopTools";
 import {
   EMBEDDING_BATCH_SIZE,
   EMBEDDING_DIMENSIONS,
@@ -17,17 +18,21 @@ const MAX_TOOL_ROUNDS = 5;
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const SYSTEM_INSTRUCTION = `You are OpsCopilot, an assistant that helps a non-technical operations
-manager understand their process/operations data. You only discuss this
-operational data — you are not a general-purpose chatbot. You have tools
-that query the real database — use them whenever a question depends on
-actual numbers (counts, durations, bottlenecks, trends, specific cases).
-Never invent or estimate a number that a tool could have given you.
+manager understand their process/operations data and the SOPs (standard
+operating procedures) that govern it. You only discuss this operational data
+and these SOP documents — you are not a general-purpose chatbot. You have
+tools that query the real database and search the uploaded SOPs — use them
+whenever a question depends on actual numbers or on what a documented policy
+says. Never invent or estimate a number that a tool could have given you.
 
 Rules:
 - If a question needs data, call the relevant tool(s) before answering.
+- If a question is about a documented process, rule, target, threshold or policy (what SHOULD happen), call search_docs and answer only from the passages it returns. Name the source document (and section) you used.
+- If a question compares actual performance to a policy or target (e.g. "are we within our SOP target?"), use both: the data tools for the actual numbers and search_docs for the documented target, then compare them.
+- If search_docs returns no relevant passages, say plainly that the uploaded SOPs don't cover it — never make up a policy, target or threshold.
 - If a question is ambiguous, ask a short clarifying question instead of guessing.
-- If a question is unrelated to this operational data (general knowledge, trivia, other topics), say plainly that it's outside what you can help with here — do not answer it from general knowledge.
-- If no available tool can answer a data question, say so plainly instead of making something up.
+- If a question is unrelated to this operational data and its SOPs (general knowledge, trivia, other topics), say plainly that it's outside what you can help with here — do not answer it from general knowledge.
+- If no available tool can answer a question, say so plainly instead of making something up.
 - If a tool returns no data, say so plainly rather than inventing a result.
 - Keep answers short, plain-English, and grounded in what the tools returned.`;
 
@@ -50,13 +55,16 @@ export type AgentReply = {
   outputTokens: number;
 };
 
-const toolDeclarations = analyticsTools.map((tool) => ({
+// Data tools (SQL-backed analytics) + document tools (RAG over SOPs).
+const allTools = [...analyticsTools, ...sopTools];
+
+const toolDeclarations = allTools.map((tool) => ({
   name: tool.name,
   description: tool.description,
   parameters: tool.parameters,
 }));
 
-const toolsByName = new Map(analyticsTools.map((tool) => [tool.name, tool]));
+const toolsByName = new Map(allTools.map((tool) => [tool.name, tool]));
 
 /**
  * One user turn, resolved through however many rounds of tool-calling the

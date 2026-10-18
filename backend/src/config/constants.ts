@@ -26,3 +26,11 @@ export const EMBEDDING_BATCH_SIZE = 100;
 // One Chroma collection holds every SOP chunk. Which chunks a user can see is
 // decided by the `datasetId` metadata filter, not by separate collections.
 export const SOP_COLLECTION = "sop_chunks";
+
+// How many chunks a search hands to the model.
+export const SOP_SEARCH_TOP_K = 4;
+// Chroma returns "distance" (smaller = closer in meaning). Anything farther
+// than this is treated as "not in the SOPs". Calibrated on the bundled SOPs:
+// on-topic questions scored 0.47-0.63, unrelated ones 0.94-1.08 - 0.8 sits in
+// the gap. Re-check this if the embedding model or chunking changes.
+export const SOP_MAX_DISTANCE = 0.8;
